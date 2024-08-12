@@ -1,0 +1,37 @@
+theme = "apollo"
+taxonomies = [{ name = "tags" }]
+
+# See this for more options: https://github.com/not-matthias/apollo/blob/main/config.toml#L14
+
+# The URL the site will be built for
+base_url = "https://nervonment.github.io/blog/"
+
+title = "Nervonment's Izakaya"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
+
+[extra]
+theme = "auto"
+mathjax = true
+mathjax_dollar_inline_enable = true
+socials = [
+  { name = "github", url = "https://github.com/Nervonment/", icon = "github" },
+  { name = "bilibili", url = "https://space.bilibili.com/401603096/", icon = "bilibili" },
+]
+menu = [
+  # Configure menu bar here
+  { name = "帖子", url = "/posts", weight = 1 },
+  { name = "项目", url = "/projects", weight = 2 },
+  { name = "关于", url = "/about", weight = 3 },
+  { name = "标签", url = "/tags", weight = 4 },
+]
+# Put all your custom variables here
