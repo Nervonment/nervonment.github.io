@@ -28,15 +28,15 @@ fn generate_column() {
 }
 ```
 
-![生成柱子](/posts/2024-07-22_14.37.48.png)
+![生成柱子](https://github.com/Nervonment/mcscript/raw/master/pictures/2024-07-22_14.37.48.png)
 
 - [example/maze.mcs](https://github.com/Nervonment/mcscript/blob/master/example/maze.mcs) 中的代码能够生成一个 45×45 的迷宫: 
 
-![生成迷宫](/posts/2024-07-24_00.51.23.png)
+![生成迷宫](https://github.com/Nervonment/mcscript/raw/master/pictures/2024-07-24_00.51.23.png)
 
 - [example/snake.mcs](https://github.com/Nervonment/mcscript/blob/master/example/snake.mcs) 中的代码能够生成一个可以玩贪吃蛇游戏的屏幕: 
 
-![贪吃蛇](/posts/2024-07-28_17.02.57.png)
+![贪吃蛇](https://github.com/Nervonment/mcscript/raw/master/pictures/2024-07-28_17.02.57.png)
 
 # 使用方法
 
