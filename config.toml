@@ -26,6 +26,7 @@ mathjax_dollar_inline_enable = true
 socials = [
   { name = "github", url = "https://github.com/Nervonment/", icon = "github" },
   { name = "bilibili", url = "https://space.bilibili.com/401603096/", icon = "bilibili" },
+  { name = "email", url = "mailto:nervonment@outlook.com", icon = "mail" },
 ]
 menu = [
   # Configure menu bar here
