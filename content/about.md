@@ -5,8 +5,6 @@ path = "about"
 
 - **名称** Nervonment (nervous - 不安的, 神经(系统)的; ment - 名词后缀).
 - **身份** 北京某高校2022级本科生. 非计算机专业. 
-- **语言(按接触顺序排序)** 中文. 英语. C/C++. Html/CSS/Javascript. Python. 日语. Rust. 
-- **日常(按时长排序)** 睡觉. 做作业. 听课. 看手机. 听音乐. 打游戏. 写代码. 
 - **技术栈** `Ctrl` `C` `V`.
 - **玩的游戏(随机顺序)** Minecraft. Muse Dash. Celeste. 极限竞速: 地平线4. 绝区0. 
 - **听的歌手/制作人(随机顺序)** C418. YOASOBI. ヨルシカ. VOCALOID. 米津玄師. 星野源. Aimer. 
