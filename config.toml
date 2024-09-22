@@ -4,7 +4,7 @@ taxonomies = [{ name = "tags" }]
 # See this for more options: https://github.com/not-matthias/apollo/blob/main/config.toml#L14
 
 # The URL the site will be built for
-base_url = "https://nervonment.github.io/blog/"
+base_url = "https://nervonment.github.io/"
 
 title = "Nervonment's Izakaya"
 
