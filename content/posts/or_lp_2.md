@@ -48,17 +48,20 @@ $$
 ### 从原问题的最终单纯形表直接得到对偶问题的最优解
 
 设原问题初始单纯形表为 
+
 $$
 \begin{pmatrix}
 \mathbf{B} & \mathbf{N} & \mathbf{I} & \mathbf{b} \newline
-\mathbf{c}_\mathbf{B}^\top & \mathbf{c}_\mathbf{N}^\top & \mathbf{0}^\top & z
+\mathbf{c} _\mathbf{B} ^\top & \mathbf{c} _\mathbf{N} ^\top & \mathbf{0}^\top & z
 \end{pmatrix}
 $$
-最终单纯形表为在原单纯形表上左乘 $\begin{pmatrix}\mathbf{B}^{-1} & \mathbf{0} \newline -\mathbf{c}_\mathbf{B}^\top\mathbf{B}^{-1} & 1\end{pmatrix}$, 即
+
+最终单纯形表为在原单纯形表上左乘 $\begin{pmatrix}\mathbf{B}^{-1} & \mathbf{0} \newline -\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1} & 1\end{pmatrix}$, 即
+
 $$
 \begin{pmatrix}
 \mathbf{I} & \mathbf{B}^{-1}\mathbf{N} & \mathbf{B}^{-1} & \mathbf{B}^{-1}\mathbf{b} \newline
-\mathbf{0}^\top & \mathbf{c}_\mathbf{N}^\top-\mathbf{c}_\mathbf{B}^\top\mathbf{B}^{-1}\mathbf{N} & -\mathbf{c}_\mathbf{B}^\top\mathbf{B}^{-1} & z-\mathbf{c}_\mathbf{B}^\top\mathbf{B}^{-1}\mathbf{b}
+\mathbf{0}^\top & \mathbf{c} _\mathbf{N} ^\top-\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1}\mathbf{N} & -\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1} & z-\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1}\mathbf{b}
 \end{pmatrix}
 $$
 
@@ -124,5 +127,5 @@ $$
 
 1. 如果所有 $b_i$ 都非负, 则停止迭代. 当前的基本可行解就是最优解. 
 2. **确定出基变量**. 令 $b_k$ 为所有负的 $b_i$ 中下标最小者, 则选择第 $k$ 行对应的基变量出基. 此处假设为 $b_1$ 和 $x_1$.
-3. **确定进基变量**. 如果 $a_{1,i} \ge 0, \forall m+1 \le i \le n$, 则问题无解. 否则, 令 $k = \argmin_{\{i|m+1\le i \le n, a_{1,i} < 0\}} \dfrac{c_i}{a_{1,i}}$, 即 $\dfrac{c_k}{a_{1,k}}$ 是 $\dfrac{c_i}{a_{1,i}}$ 中非负最小者, 选择 $x_k$ 进基. 如果有多个 $k$, 选择其中最小者. 此处假设为 $x_{m+1}$.
+3. **确定进基变量**. 如果 $a_{1,i} \ge 0, \forall m+1 \le i \le n$, 则问题无解. 否则, 令 $k = \arg\min_{ \lbrace i|m+1\le i \le n, a_{1,i} < 0 \rbrace } \dfrac{c_i}{a_{1,i}}$, 即 $\dfrac{c_k}{a_{1,k}}$ 是 $\dfrac{c_i}{a_{1,i}}$ 中非负最小者, 选择 $x_k$ 进基. 如果有多个 $k$, 选择其中最小者. 此处假设为 $x_{m+1}$.
 4. **初等行变换**. 将第 $1$ 行除以 $a_{1,m+1}$, 并乘以 $-a_{i, m+1}$ 加到第 $i$ 行上, 乘以 $-c_{m+1}$ 加到最后一行上. 
