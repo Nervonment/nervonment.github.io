@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<html class="dark light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+    
+    
+    
+    <title>
+         在 MCScript 中调用模组命令
+        
+    </title>
+
+        
+            <meta property="og:title" content="在 MCScript 中调用模组命令" />
+        
+     
+
+     
+         
+     
+
+     
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://nervonment.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Nervonment&#x27;s Izakaya" href="https://nervonment.github.io/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://nervonment.github.io/theme/light.css />
+        <link rel="stylesheet" type="text/css" href="https://nervonment.github.io/theme/dark.css" media="(prefers-color-scheme: dark)" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://nervonment.github.io/js/themetoggle.js></script>
+    
+        <script>
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme("dark");
+            } else {
+                setTheme("light");
+            }
+        </script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://nervonment.github.io/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;nervonment.github.io&#x2F;>Nervonment&#x27;s Izakaya</a>
+
+        <div class="socials">
+            
+            <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;Nervonment&#x2F;" class="social">
+                <img alt=github src=https://nervonment.github.io/social_icons/github.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;space.bilibili.com&#x2F;401603096&#x2F;" class="social">
+                <img alt=bilibili src=https://nervonment.github.io/social_icons/bilibili.svg>
+            </a>
+            
+            <a rel="me" href="mailto:nervonment@outlook.com" class="social">
+                <img alt=email src=https://nervonment.github.io/social_icons/mail.svg>
+            </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+        <a href=https://nervonment.github.io/posts style="margin-left: 0.5em">帖子</a>
+        
+        <a href=https://nervonment.github.io/projects style="margin-left: 0.5em">项目</a>
+        
+        <a href=https://nervonment.github.io/about style="margin-left: 0.5em">关于</a>
+        
+        <a href=https://nervonment.github.io/tags style="margin-left: 0.5em">标签</a>
+        
+
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        在 MCScript 中调用模组命令<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2024-10-05</time>
+                    
+
+                    
+                        :: Updated on <time>2024-10-05</time>
+                    
+
+                    
+
+                    
+                    
+                            <span class="tags-label"> :: Tags:</span>
+                            <span class="tags">
+                                    <a href="https://nervonment.github.io/tags/wan-ju/" class="post-tag">玩具</a>, 
+                                
+                                    <a href="https://nervonment.github.io/tags/minecraft/" class="post-tag">Minecraft</a>, 
+                                
+                                    <a href="https://nervonment.github.io/tags/mcscript/" class="post-tag">MCScript</a>
+                                
+                            </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <p>最近做了个<a href="https://www.bilibili.com/video/BV1wt4AeiENk">粘土人</a>, 想剪一个逐层切片教程, 要展示建筑的每一个横截面, 而且要有平滑石头这种有边框的方块作为背景参考. 突发奇想, 想试试能不能通过 MCScript 来调用 WorldEdit 的命令来实现.</p>
+<p>首先验证一下选区和填充方块能不能实现:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>let X1: int = -2;
+</span><span>let Z1: int = -2;
+</span><span>let X2: int = 2;
+</span><span>let Z2: int = 2;
+</span><span>
+</span><span>fn main() {
+</span><span>    // 设置选区的起点和终点
+</span><span>    run_command!(&quot;/pos1 {},0,{}&quot;, X1, Z1);
+</span><span>    run_command!(&quot;/pos2 {},0,{}&quot;, X2, Z2);
+</span><span>    // 用石头填充选区
+</span><span>    run_command!(&quot;/set stone&quot;);
+</span><span>}
+</span></code></pre>
+<p>编译运行, 发现选区(前两条命令)能够正常选取, 但是到第三条命令就没有反应了.</p>
+<p>原理上, MCScript 编译器会为每一个 run_command! 调用生成一个 mcfunction 函数文件. 例如上面的三条命令会被分别生成在 <code>custom_cmd_0.mcfunction</code>, <code>custom_cmd_1.mcfunction</code> 和 <code>custom_cmd_2.mcfunction</code> 中. 检查其中后两个文件, 内容如下:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// custom_cmd_1.mcfunction
+</span><span>
+</span><span>$/pos2 $(0),0,$(1)
+</span></code></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// custom_cmd_2.mcfunction
+</span><span>
+</span><span>/set stone
+</span></code></pre>
+<p>有的玩家可能没有见过 <code>$</code> 符号. 这里解释一下, 这是 Java 版 1.20.2 中加入的新功能 - <a href="https://zh.minecraft.wiki/w/Java%E7%89%88%E5%87%BD%E6%95%B0">宏</a>. 从此版本起, mcfunction 函数中的命令可以以 <code>$</code> 开头, 其后必须包含一个或以上的宏参数 <code>$(&lt;parameter&gt;)</code>. 运行该函数时, 将把命令中的 <code>$(&lt;parameter&gt;)</code> 部分直接替换为相应参数 <code>&lt;parameter&gt;</code> 的值的字符串形式. 例如, 可以通过下面的方式调用 <code>custom_cmd_1.mcfunction</code>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>function my_namespace:custom_cmd_1 {0: 114, 1: 514}
+</span></code></pre>
+<p><code>custom_cmd_1.mcfunction</code> 中的命令将会被解析为</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/pos2 114,0,514
+</span></code></pre>
+<p>Minecraft 在运行 mcfunction 函数前, 会先判断函数中的每一条命令是否是一条正确的 Minecraft 命令 (不包括模组命令). 也就是说, 如果在函数中直接加入一条类似于 <code>/set stone</code> 的模组命令, Minecraft 是会拒绝运行的. 这也就是上面的 <code>custom_cmd_2.mcfunction</code> 没有成功运行的原因. 可是为什么前两个带有宏的函数能够成功运行呢? 因为在运行带有宏的命令前, Minecraft 无法提前判断这条命令是否合法, 只能假设他是合法的, 并尝试解析和执行. 前两个函数正是因为带有宏, 所以绕过了游戏的检查, 得以成功执行.</p>
+<p>这么一来, 想要通过函数运行 <code>/set stone</code> 这样的模组命令, 只要在命令的末尾加上一个宏参数, 并在运行的时候给这个参数传入一个空字符串即可:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// custom_cmd_2.mcfunction
+</span><span>$/set stone$(empty_str)
+</span></code></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// 调用方式
+</span><span>function my_namespace:custom_cmd_2 {empty_str: &quot;&quot;}
+</span></code></pre>
+<p>于是我在 MCScript 中加入了 <code>run_mod_command!</code>. 有别于 <code>run_command!</code>, 在命令中不含任何参数时, <code>run_mod_command!</code> 会在命令的末尾自动加上一个 <code>$(empty_str)</code> 参数, 以实现对模组命令的调用.</p>
+<p>下面就是切片展示工具的完整代码:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>let X1: int = -15;
+</span><span>let Z1: int = -15;
+</span><span>let X2: int = 15;
+</span><span>let Z2: int = 15;
+</span><span>
+</span><span>let Y1: int = 14;
+</span><span>let Y2: int = -12;
+</span><span>
+</span><span>let y: int = Y1;
+</span><span>
+</span><span>// 每调用一次此函数, 展示下一层横截面
+</span><span>fn slice_step() {
+</span><span>    if y &lt; Y2 {
+</span><span>        run_mod_command!(&quot;/undo&quot;);
+</span><span>        return;
+</span><span>    }
+</span><span>    run_command!(&quot;say current y: {}&quot;, y - 1);
+</span><span>
+</span><span>    if y != Y1 {
+</span><span>        run_mod_command!(&quot;/undo&quot;);
+</span><span>    }
+</span><span>    run_mod_command!(&quot;/pos1 {},{},{}&quot;, X1, y, Z1);
+</span><span>    run_mod_command!(&quot;/pos2 {},{},{}&quot;, X2, y, Z2);
+</span><span>    run_mod_command!(&quot;/set air&quot;);
+</span><span>    run_mod_command!(&quot;/pos1 {},{},{}&quot;, X1, y - 2, Z1);
+</span><span>    run_mod_command!(&quot;/pos2 {},{},{}&quot;, X2, y - 2, Z2);
+</span><span>    run_mod_command!(&quot;/set smooth_stone&quot;);
+</span><span>    run_command!(&quot;tp @s {} {} {} 0 90&quot;, (X1 + X2) / 2, y + 20, (Z1 + Z2) / 2);
+</span><span>    y -= 1;
+</span><span>}
+</span></code></pre>
+<p>可以看到<a href="https://www.bilibili.com/video/BV1wt4AeiENk">效果</a>还是挺不错的. 最主要的是, 它真的很快! 只要修改起点和终点坐标, 一分钟之内就能得到建筑的各层切片截图. <del>拖更理由减一</del></p>
+
+        </section>
+    </article>
+</main>
+
+
+
+        
+
+    </div>
+</body>
+
+</html>

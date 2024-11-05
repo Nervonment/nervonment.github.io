@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<html class="dark light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+    
+    
+    
+    <title>
+         线性规划——单纯形法
+        
+    </title>
+
+        
+            <meta property="og:title" content="线性规划——单纯形法" />
+        
+     
+
+     
+         
+     
+
+     
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://nervonment.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Nervonment&#x27;s Izakaya" href="https://nervonment.github.io/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://nervonment.github.io/theme/light.css />
+        <link rel="stylesheet" type="text/css" href="https://nervonment.github.io/theme/dark.css" media="(prefers-color-scheme: dark)" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://nervonment.github.io/js/themetoggle.js></script>
+    
+        <script>
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme("dark");
+            } else {
+                setTheme("light");
+            }
+        </script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://nervonment.github.io/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;nervonment.github.io&#x2F;>Nervonment&#x27;s Izakaya</a>
+
+        <div class="socials">
+            
+            <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;Nervonment&#x2F;" class="social">
+                <img alt=github src=https://nervonment.github.io/social_icons/github.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;space.bilibili.com&#x2F;401603096&#x2F;" class="social">
+                <img alt=bilibili src=https://nervonment.github.io/social_icons/bilibili.svg>
+            </a>
+            
+            <a rel="me" href="mailto:nervonment@outlook.com" class="social">
+                <img alt=email src=https://nervonment.github.io/social_icons/mail.svg>
+            </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+        <a href=https://nervonment.github.io/posts style="margin-left: 0.5em">帖子</a>
+        
+        <a href=https://nervonment.github.io/projects style="margin-left: 0.5em">项目</a>
+        
+        <a href=https://nervonment.github.io/about style="margin-left: 0.5em">关于</a>
+        
+        <a href=https://nervonment.github.io/tags style="margin-left: 0.5em">标签</a>
+        
+
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        线性规划——单纯形法<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2024-10-28</time>
+                    
+
+                    
+                        :: Updated on <time>2024-10-31</time>
+                    
+
+                    
+
+                    
+                    
+                            <span class="tags-label"> :: Tags:</span>
+                            <span class="tags">
+                                    <a href="https://nervonment.github.io/tags/ke-cheng-yun-chou-xue/" class="post-tag">课程「运筹学」</a>
+                                
+                            </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <blockquote>
+<p>我写这篇笔记本来只是为了期中复习, 但是写着写着就忍不住写成了教程的口吻, 以至于你只需要一点基本的线性代数知识就能够完全看懂本文. 如果能对后来者有所帮助, 那就再好不过了.</p>
+</blockquote>
+<h1 id="xian-xing-gui-hua-mo-xing"><a class="zola-anchor" href="#xian-xing-gui-hua-mo-xing" aria-label="Anchor link for: xian-xing-gui-hua-mo-xing">线性规划模型</a></h1>
+<p>我们在中学时候就接触过低维的线性规划问题, 例如</p>
+<p>$$
+\begin{aligned}
+\max \quad &amp; x + y \newline
+\text{s.t.} \quad &amp; x + 2y \le 3 \newline
+&amp; 4x + 3y \le 7
+\end{aligned}
+$$</p>
+<p>其中 $x+y$ 称为<strong>目标函数</strong>, 后面的两个不等式称为<strong>约束</strong>. 当时我们的解决方法是, 将不等式约束看成是平面 $\mathbb{R}^2$ 上的一个区域, 然后移动直线 $z=x+y$, 在保持直线和区域有交点的情况下, 使得截距 $z$ 最大. 通过这种方法, 轻易就能看出上面这个问题的<strong>最优解</strong>为 $(x,y)=(1,1)$, <strong>最优目标值</strong>为 $z=2$.</p>
+<p>但是当变量的个数变得更多, 解空间的维数变得更高的时候, 我们就们没有办法再画图去观察了. 这时候我们需要寻求一种对于任意规模的线性规划问题都<em>普适</em>的, <em>机械化</em>的方法.</p>
+<p>为了达到这个目标, 首先需要将所有的线性规划用一个统一的形式表示. 即<strong>标准形式</strong>:</p>
+<h2 id="biao-zhun-xing-shi"><a class="zola-anchor" href="#biao-zhun-xing-shi" aria-label="Anchor link for: biao-zhun-xing-shi">标准形式</a></h2>
+<p>以下形式的线性规划问题, 称为线性规划的标准形式:</p>
+<p>$$
+\begin{aligned}
+\max \quad &amp; \mathbf{c^\top} \mathbf{x} \newline
+\text{s.t.} \quad &amp; \mathbf{A}\mathbf{x} = \mathbf{b} \newline
+&amp; \mathbf{x} \ge \mathbf{0}
+\end{aligned}
+$$</p>
+<p>这里的 $\mathbf{x}, \mathbf{c}$ 是 $n$ 维向量, 即解空间是 $n$ 维的. $\mathbf{A}$ 是 $m \times n$ 满秩矩阵 ($m&lt;n$), $\mathbf{b}$ 是 $m$ 维向量, $\mathbf{A}\mathbf{x} = \mathbf{b}$ 就是关于 $\mathbf{x}$ 的 $m$ 个独立的线性方程(要求 $m&lt;n$, 是因为若 $m\ge n$, 则方程组可以直接解出来或者无解, 从而没有必要讨论). $\mathbf{x} \ge \mathbf{0}$ 的意思是 $\mathbf{x}$ 的所有分量都不小于 $0$.</p>
+<p>乍一看可能不太好理解, 为什么标准形式中的约束有等式形式的呢? 我们在中学时接触过的线性规划(例如上面给的例子), 不都是不等式约束吗? 其实通过一些操作, 我们可以强行把这些不等式约束变成等式约束, 并且引入所有变量非负的约束, 从而变成标准形式.</p>
+<h2 id="jiang-ren-yi-xian-xing-gui-hua-wen-ti-hua-wei-biao-zhun-xing-shi"><a class="zola-anchor" href="#jiang-ren-yi-xian-xing-gui-hua-wen-ti-hua-wei-biao-zhun-xing-shi" aria-label="Anchor link for: jiang-ren-yi-xian-xing-gui-hua-wen-ti-hua-wei-biao-zhun-xing-shi">将任意线性规划问题化为标准形式</a></h2>
+<p>以上面的例子为例. 首先, $x$ 和 $y$ 并没有非负的限制, 这不符合标准形式的要求. 但是我们知道, 任何一个实数都可以拆成两个非负实数的差, 所以只要将 $x$ 和 $y$ 分别拆成 $x=x_1-x_2, y=x_3 - x_4$ 即可:</p>
+<p>$$
+\begin{aligned}
+\max \quad &amp; x_1 - x_2 + x_3 - x_4 \newline
+\text{s.t.} \quad &amp; x_1-x_2 + 2x_3 - 2x_4 \le 3 \newline
+&amp; 4x_1 - 4x_2 + 3x_3 - 3x_4 \le 7 \newline
+&amp; x_i \ge 0, i=1,2,3,4
+\end{aligned}
+$$</p>
+<p>接下来还差一步, 我们要将除了非负约束外的不等式约束都变成等式约束. 这其实也很简单. 我们观察第一个不等式, 既然 $x_1-x_2 + 2x_3 - 2x_4 \le 3$, 那么 $x_1-x_2 + 2x_3 - 2x_4$ 加上一个正数不就等于 $3$ 吗? 于是我们引入一个变量 $x_5$:</p>
+<p>$$
+\begin{aligned}
+&amp; x_1-x_2 + 2x_3 - 2x_4 + x_5 = 3 \newline
+&amp; x_5 \ge 0
+\end{aligned}
+$$</p>
+<p>对于第二个不等式, 也是一样的操作. 于是原问题就变成了下面的标准形式:</p>
+<p>$$
+\begin{aligned}
+\max \quad &amp; x_1 - x_2 + x_3 - x_4 \newline
+\text{s.t.} \quad &amp; x_1-x_2 + 2x_3 - 2x_4 + x_5 = 3 \newline
+&amp; 4x_1 - 4x_2 + 3x_3 - 3x_4 + x_6 = 7 \newline
+&amp; x_i \ge 0, i=1,2,\dots,6
+\end{aligned}
+$$</p>
+<p>虽然问题的变量个数从 $2$ 个增加到了 $6$ 个, 但是不用怕. 只要化成了标准形式, 就可以使用<strong>单纯形法</strong>机械地求出最优解.</p>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>注</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>有些线性规划问题要求目标函数的最小值, 此时将 $\min z$ 写作 $-\max -z$ 即可.</p>
+
+    </div>
+  
+</div>
+<h1 id="ke-xing-yu-he-ding-dian"><a class="zola-anchor" href="#ke-xing-yu-he-ding-dian" aria-label="Anchor link for: ke-xing-yu-he-ding-dian">可行域和顶点</a></h1>
+<p>在介绍单纯形法之前, 首先要对标准形式的可行域和顶点有所理解. <strong>可行域</strong>就是指解空间 $\mathbb{R}^n$ 中, 满足约束的那些点的集合. 这些满足约束的点就称为<strong>可行解</strong>.</p>
+<h2 id="ke-xing-yu-shi-tu-ji"><a class="zola-anchor" href="#ke-xing-yu-shi-tu-ji" aria-label="Anchor link for: ke-xing-yu-shi-tu-ji">可行域是凸集</a></h2>
+<p>标准形式中的 $m$ 个(互相独立的)等式约束, 首先在解空间 $\mathbb{R}^n$ 中确定了一个 $n-m$ 维的<em>线性子空间</em>. 只有在这个子空间中的点, 才有可能是可行解. 例如, 假如问题的解是 $3$ 维的, 如果我们有 $1$ 个等式约束, 那么它就确定了一个平面($2$ 维子空间), 只有这个平面上的点才有可能是可行解; 如果有 $2$ 个等式约束, 那么它们就确定了一条直线($1$ 维子空间), 只有这条直线上的点才有可能是可行解.</p>
+<p>接下来, 所有非负约束把这个 $n-m$ 维的线性子空间截断, 最终使得可行域是一个 $n-m$ 维的<em>凸多面体</em>(也有可能是一个无界的凸集, 但是不影响下面得出的结论).</p>
+<h2 id="zui-you-jie-shi-ding-dian"><a class="zola-anchor" href="#zui-you-jie-shi-ding-dian" aria-label="Anchor link for: zui-you-jie-shi-ding-dian">最优解是顶点</a></h2>
+<p>想象 $3$ 维解空间中的等式约束 $x_1+x_2+x_3=1$, 它所确定的平面被非负约束 $x_1 \ge 0, x_2 \ge 0, x_3 \ge 0$ 截断成了顶点为 $(1,0,0), (0,1,0), (0,0,1)$ 的等边三角形 $\Delta$. 而我们的目标函数 $z=ax_1+bx_2+cx_3$ 是一个平面. 当我们移动这个平面, 使得它与三角形 $\Delta$ 有相交区域时, $z$ 就是可能取到的目标函数值. 什么时候目标函数值能最大呢? 如果这个平面与三角形 $\Delta$ 不平行的话, 不难想象, 必然是两者交于三角形 $\Delta$ 的顶点的时候, 在此顶点处目标函数值最大. 于是我们有下面的定理:</p>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>定理</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>线性规划问题若有有界最优解, 则必有一个最优解是可行域的顶点.</p>
+
+    </div>
+  
+</div>
+<p>再回到一般的情况, 我们若想在 $n-m$ 维的凸可行域中找到使得目标函数值最大的点, 必然只能在可行域的顶点中去寻找. 所以这些顶点解被称为<strong>基本可行解</strong>. 那么要怎么获得这些顶点呢? 我们再回到代数的视角, 现在有 $m$ 个等式, 要确定一个 $n$ 维的点, 所以我们还需要 $n-m$ 个等式. 既然是顶点, 那么这 $n-m$ 个等式, 当然就是在 $n$ 个非负变量中, 任意取 $n-m$ 个为 $0$. 这样的取法共有 $\mathrm{C}_{n}^{n-m}$ 种, 对于这么多可能的取法, 单纯形法提供了一种较为系统且完备的遍历方法.</p>
+<h1 id="dan-chun-xing-fa"><a class="zola-anchor" href="#dan-chun-xing-fa" aria-label="Anchor link for: dan-chun-xing-fa">单纯形法</a></h1>
+<p>单纯形法的基本思想是, 假设我们已经知道可行域的某个顶点, 然后用这个顶点出发, 移动到下一个顶点, 再移动到下一个顶点, 在此过程中让目标函数逐渐增加到最大值.</p>
+<p>接下来仍然沿用之前的例子来对这一过程进行演示:</p>
+<p>$$
+\begin{aligned}
+\max \quad &amp; x_1 - x_2 + x_3 - x_4 = z\newline
+\text{s.t.} \quad &amp; x_1-x_2 + 2x_3 - 2x_4 + x_5 = 3 \newline
+&amp; 4x_1 - 4x_2 + 3x_3 - 3x_4 + x_6 = 7 \newline
+&amp; x_i \ge 0, i=1,2,\dots,6
+\end{aligned}
+$$</p>
+<h2 id="dan-chun-xing-biao"><a class="zola-anchor" href="#dan-chun-xing-biao" aria-label="Anchor link for: dan-chun-xing-biao">单纯形表</a></h2>
+<p>为了简洁, 我们将等式约束和目标函数列在一个增广矩阵 $\begin{pmatrix}\mathbf{A} &amp; \mathbf{b} \newline \mathbf{c^\top} &amp; z \end{pmatrix}$ 里:</p>
+<p>$$
+\begin{pmatrix}
+1 &amp; -1 &amp; 2 &amp; -2 &amp; 1 &amp; 0 &amp; 3 \newline
+4 &amp; -4 &amp; 3 &amp; -3 &amp; 0 &amp; 1 &amp; 7 \newline
+1 &amp; -1 &amp; 1 &amp; -1 &amp; 0 &amp; 0 &amp; z \newline
+\end{pmatrix}
+$$</p>
+<p>这个矩阵叫<strong>单纯形表</strong>. 其中前面的行是等式约束, 最后一行是目标函数. 注意到 $\mathbf{A}$ 的第 $5$ 和 $6$ 列 ($x_5$ 和 $x_6$ 的系数) 构成了二阶单位阵, 因此如果我们让 $x_1, x_2, x_3, x_4$ 都为 $0$, 立刻就可以得到一个基本可行解 $\mathbf{x} = (0, 0, 0, 0, 3, 7)^\top$. 在基本可行解中, 不为零的变量 (此处的 $x_5$ 和 $x_6$) 称为<strong>基变量</strong>, 为零的 (此处的 $x_1, x_2, x_3, x_4$) 则称为<strong>非基变量</strong>.</p>
+<h2 id="zui-you-xing-pan-ju"><a class="zola-anchor" href="#zui-you-xing-pan-ju" aria-label="Anchor link for: zui-you-xing-pan-ju">最优性判据</a></h2>
+<p>那么这个解是不是最优的呢? 显然不是, 但是我们还是需要有依据来判断一下. 注意看最后一行, 目标函数被表示为了<em>非基变量</em>的线性组合, 即 $z=x_1 - x_2 + x_3 - x_4$. 现在因为所有非基变量都是 $0$, 所以 $z=0$. 如果我们把 $x_1$ 的值改为一个正数, 其他的非基变量不变, 那么就可以得到另一个解, 这个解的 $x_5$ 和 $x_6$ 会有新的值, 但是因为目标函数的表达式中不含 $x_5$ 和 $x_6$, 所以目标函数只会受 $x_1$ 的影响, 而且<em>因为 $x_1$ 的系数为正</em>, 目标函数会增大. 所以这个解并不是最优的. 由此可见:</p>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>定理</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>一个基本可行解是最优解, 当且仅当目标函数表示为其非基变量的线性组合时, 所有系数非正.</p>
+
+    </div>
+  
+</div>
+<p>这些系数因此被称为<strong>检验数</strong>.</p>
+<h2 id="jin-ji-yu-chu-ji"><a class="zola-anchor" href="#jin-ji-yu-chu-ji" aria-label="Anchor link for: jin-ji-yu-chu-ji">进基与出基</a></h2>
+<p>接下来我们要去寻找另一个顶点, 从而让目标函数更优. 方法是让一个基变量变为非基变量 (称为<strong>出基变量</strong>), 同时让一个非基变量变为基变量 (称为<strong>进基变量</strong>). 进基变量进基后, 只出现在出基变量之前出现的那一行, 而作为代价, 出基变量又会出现在其他行. 我们首先选择进基变量. 由刚刚的讨论我们已经知道, 如果让一个检验数正的非基变量变为正的值, 则目标函数会增加; 而相反地, 如果让一个检验数为负的非基变量变为非正的值, 则目标函数会减少 (或者不变). 因此我们要选择<em>检验数为正的非基变量</em>进基. 这里我们选择 $x_1$.</p>
+<p>在选择出基变量之前, 我们首先要知道如何实现进出基. 在方程形式的约束条件中, 我们会通过将一个方程加到另一个方程上面来实现进出基. 对应到单纯形表里面, 就是做<em>初等行变换</em>. 例如这里如果我们想要 $x_6$ 出基, 因为 $x_6$ 只出现在第 $2$ 行, 所以我们先将第 $2$ 行除以 $4$, 使得 $x_1$ 的系数为 $1$:</p>
+<p>$$
+\begin{pmatrix}
+1 &amp; -1 &amp; \dfrac{3}{4} &amp; -\dfrac{3}{4} &amp; 0 &amp; \dfrac{1}{4} &amp; \dfrac{7}{4} \newline
+\end{pmatrix}
+$$</p>
+<p>然后从第 $1$ 行中减去第 $2$ 行, 使得 $x_1$ 只在第 $2$ 行出现:</p>
+<p>$$
+\begin{pmatrix}
+0 &amp; 0 &amp; \dfrac{5}{4} &amp; -\dfrac{5}{4} &amp; 1 &amp; -\dfrac{1}{4} &amp; \dfrac{5}{4} \newline
+1 &amp; -1 &amp; \dfrac{3}{4} &amp; -\dfrac{3}{4} &amp; 0 &amp; \dfrac{1}{4} &amp; \dfrac{7}{4} \newline
+1 &amp; -1 &amp; 1 &amp; -1 &amp; 0 &amp; 0 &amp; z \newline
+\end{pmatrix}
+$$</p>
+<p>这样 $x_1$ 就变成了基变量, $x_6$ 就变成了非基变量. 此时的基本可行解为 $\mathbf{x}=\left(\dfrac{7}{4},0,0,0,\dfrac{5}{4},0\right)^\top$.</p>
+<p>可不可以不让 $x_6$ 出基, 而让 $x_5$ 出基呢? 如果尝试之后, 你会发现单纯形表变成了这样:</p>
+<p>$$
+\begin{pmatrix}
+1 &amp; -1 &amp; 2 &amp; -2 &amp; 1 &amp; 0 &amp; 3 \newline
+0 &amp; 0 &amp; -5 &amp; 5 &amp; -4 &amp; 1 &amp; -5 \newline
+1 &amp; -1 &amp; 1 &amp; -1 &amp; 0 &amp; 0 &amp; z \newline
+\end{pmatrix}
+$$</p>
+<p>如果这时候我们尝试写出相应的解, 会发现 $x_6 = -5$ 变成了负数, 因此这个解不再是基本可行解! 我们来分析一下其中的原因. 假设在变换前, 进基变量在各行的系数为 $\mathbf{a}=\begin{pmatrix}
+a_1 \newline a_2 \newline \vdots \newline a_m
+\end{pmatrix}$, 等式约束右边的常数为 $\mathbf{b}=\begin{pmatrix}
+b_1 \newline b_2 \newline \vdots \newline b_m
+\end{pmatrix}$. 如果我们让 $x_1$ 出基, 也就是让进基变量在第 $1$ 行的系数为 $1$, 其它行的系数都为 $0$, 那么经过初等行变换可以得到:</p>
+<p>$$
+\begin{pmatrix}
+1 &amp; \dfrac{b_1}{a_1} \newline
+0 &amp; a_2\left(\dfrac{b_2}{a_2} - \dfrac{b_1}{a_1}\right) \newline
+\vdots &amp; \vdots \newline
+0 &amp; a_m\left(\dfrac{b_m}{a_m} - \dfrac{b_1}{a_1}\right)
+\end{pmatrix}
+$$</p>
+<p>暂且假设 $a_i$ 都大于 $0$. 因为右边一列的数必须都都是非负的 (否则得到的解中有变量是负数), 所以 $\dfrac{b_1}{a_1}$ 必须是所有 $\dfrac{b_i}{a_i}$ 中最小者. 在刚刚的例子中, 观察 $x_1$ 的系数 $\begin{pmatrix}1 \newline 4\end{pmatrix}$ 和右边的常数 $\begin{pmatrix}3 \newline 7\end{pmatrix}$, 因为 $\dfrac{7}{4} &lt; \dfrac{3}{1}$, 所以我们选择第 $2$ 行对应的基变量 $x_6$ 出基.</p>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>注意</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>当 ${a_i}$ 中有负数或 $0$ 时, 之后我们会讨论, 不用考虑这些 $a_i$ 对应的基变量 $x_i$. 应该选择 <em>$\dfrac{b_i}{a_i}$ 中的非负最小者对应的基变量 $x_i$</em> 出基.</p>
+
+    </div>
+  
+</div>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>注</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>在多个非基变量都可以进基或多个基变量都可以出基时, 没有一个通用的选取进出基变量的规则, 能够使得迭代次数最少. 事实上, 可以证明对于任何一个选取进出基变量的规则, 都可以构造一个线性规划问题, 使得单纯形法需要遍历可行域所有的顶点. (注: 需要来源)</p>
+
+    </div>
+  
+</div>
+<p>回到正题, 刚刚我们让 $x_1$ 进基, $x_6$ 出基, 得到了下面的单纯形表和基本可行解 $\left(\dfrac{7}{4},0,0,0,\dfrac{5}{4},0\right)^\top$.</p>
+<p>$$
+\begin{pmatrix}
+0 &amp; 0 &amp; \dfrac{5}{4} &amp; -\dfrac{5}{4} &amp; 1 &amp; -\dfrac{1}{4} &amp; \dfrac{5}{4} \newline
+1 &amp; -1 &amp; \dfrac{3}{4} &amp; -\dfrac{3}{4} &amp; 0 &amp; \dfrac{1}{4} &amp; \dfrac{7}{4} \newline
+1 &amp; -1 &amp; 1 &amp; -1 &amp; 0 &amp; 0 &amp; z \newline
+\end{pmatrix}
+$$</p>
+<p>像刚才一样, 我们需要判断这个基本可行解是不是最优解. 但是观察最后一行, 目标函数 $z$ 并不是全部由非基变量表示, 还不能直接判断. 我们可以同样通过初等行变换, 从第 $3$ 行减去第 $2$ 行, 使得进基变量 $x_1$ 的系数为 $0$:</p>
+<p>$$
+\begin{pmatrix}
+0 &amp; 0 &amp; \dfrac{5}{4} &amp; -\dfrac{5}{4} &amp; 1 &amp; -\dfrac{1}{4} &amp; \dfrac{5}{4} \newline
+1 &amp; -1 &amp; \dfrac{3}{4} &amp; -\dfrac{3}{4} &amp; 0 &amp; \dfrac{1}{4} &amp; \dfrac{7}{4} \newline
+0 &amp; 0 &amp; \dfrac{1}{4} &amp; -\dfrac{1}{4} &amp; 0 &amp; -\dfrac{1}{4} &amp; z-\dfrac{7}{4} \newline
+\end{pmatrix}
+$$</p>
+<p><em>到这里, 我们就完成了单纯形法的一步完整的迭代</em>. 接下来因为目标函数中 $x_3$ 的系数为正, 我们选择它进基, 并且因为 $\dfrac{\frac{5}{4}}{\frac{5}{4}} &lt; \dfrac{\frac{7}{4}}{\frac{3}{4}}$, 我们选择第 $1$ 行对应的基变量 $x_5$ 出基:</p>
+<p>$$
+\begin{pmatrix}
+0 &amp; 0 &amp; 1 &amp; -1 &amp; \dfrac{4}{5} &amp; -\dfrac{1}{5} &amp; 1 \newline
+1 &amp; -1 &amp; 0 &amp; 0 &amp; -\dfrac{3}{5} &amp; \dfrac{2}{5} &amp; 1 \newline
+0 &amp; 0 &amp; 0 &amp; 0 &amp; -\dfrac{1}{5} &amp; -\dfrac{1}{5} &amp; z-2 \newline
+\end{pmatrix}
+$$</p>
+<p>现在所有非基变量的检验数都为非正数, 说明我们找到了最优解 $\mathbf{x}=(1,0,1,0,0,0)^\top$. 由最后一行可得最优目标值为</p>
+<p>$$
+z=-\dfrac{1}{5}x_5-\dfrac{1}{5}x_6+2=2
+$$</p>
+<p>再计算最初问题中的 $x$ 和 $y$:</p>
+<p>$$
+\begin{aligned}
+x &amp; = x_1 - x_2 = 1 \newline
+y &amp; = x_3 - x_4 = 1 \newline
+\end{aligned}
+$$</p>
+<p>和我们最开始得出的结论一样. 单纯形法诚不欺我.</p>
+<h1 id="huan-mei-you-jie-jue-de-wen-ti"><a class="zola-anchor" href="#huan-mei-you-jie-jue-de-wen-ti" aria-label="Anchor link for: huan-mei-you-jie-jue-de-wen-ti">还没有解决的问题...</a></h1>
+<p>读者看到这里可能已经疲倦了, 我也是. 但是不幸的是上面的例子只是一个非常完美的个例, 我们还一些特殊情况没有处理, 包括</p>
+<ul>
+<li>选择出基变量时, 我们要找到常数与进基变量系数的最小比值 $\dfrac{b_i}{a_i}$. 但如果 $a_i$ 小于或等于 $0$ 怎么办?</li>
+<li>进基之后, 某些基变量等于 $0$ 会带来什么问题?</li>
+<li>上面的例子中, 我们一开始就能够从 $\mathbf{A}$ 中找到一个单位阵, 从而获得一个基本可行解. 但是如果 $\mathbf{A}$ 中没有单位阵怎么办?</li>
+</ul>
+<p>下面我们来逐一讨论.</p>
+<h2 id="wu-fa-jin-ji"><a class="zola-anchor" href="#wu-fa-jin-ji" aria-label="Anchor link for: wu-fa-jin-ji">无法进基</a></h2>
+<p>选择出基变量时, 我们要考察常数与进基变量系数 $\dfrac{b_i}{a_i}$ 的比值, 使得进行初等行变换后, 等式右边的常数项 (即基本可行解中基变量的值) 为非负. 假设让 $x_1$ 进基, 我们之前已经计算过, 这个常数项为</p>
+<p>$$
+\begin{pmatrix}
+\dfrac{b_1}{a_1} \newline
+a_2\left(\dfrac{b_2}{a_2} - \dfrac{b_1}{a_1}\right) \newline
+\vdots \newline
+a_m\left(\dfrac{b_m}{a_m} - \dfrac{b_1}{a_1}\right)
+\end{pmatrix}
+$$</p>
+<p>之前我们假设 $a_i &gt; 0$. 现在我们要完整的讨论所有情况:</p>
+<ul>
+<li>首先, $a_1 \ne 0$. 如果 $a_1 = 0$, 那么是没办法将第 $1$ 行除以 $a_1$ 来让进基变量在此行的系数变为 $1$ 的.</li>
+<li>根据第 $1$ 行, 因为 $b_1$ 非负, 所以 $a_1$ 必须为正.</li>
+<li>根据第 $j$ 行 ($j&gt;1$), 如果 $a_j &lt; 0$, 那么 $a_j\left(\dfrac{b_j}{a_j}-\dfrac{b_1}{a_1}\right)$ 是负数乘负数 (或者负数乘 $0$, 当 $b_j=b_1=0$ 时), 为正 (或者 $0$). 如果 $a_j=0$, 那么  $a_j\left(\dfrac{b_j}{a_j}-\dfrac{b_1}{a_1}\right) = 0$. 所以 $a_j$ 为非正时都没有问题. 但是如果 $a_j &gt; 0$, 就必须有 $\dfrac{b_j}{a_j} &gt; \dfrac{b_1}{a_1}$. 这说明 $\dfrac{b_1}{a_1}$ <em>必须是非负比值中最小者</em>.</li>
+</ul>
+<p>因此只要存在一个 $a_i$ 为正 (即 ${i | a_i&gt;0} \ne \varnothing$), 我们就可以找到非负的 $\dfrac{b_i}{a_i}$ 中最小者 $\dfrac{b_k}{a_k} = \min_{ { i|a_i&gt;0 } } \dfrac{b_i}{a_i}$, 从而选取相应的基变量 $x_k$ 出基 ($k=\arg\min_{ { i|a_i&gt;0 } } \dfrac{b_i}{a_i}$).</p>
+<p>这里的问题是, 如果<em>所有 $a_i$ 都非正</em>呢? 我们看下面的例子:</p>
+<p>TODO.</p>
+<h2 id="tui-hua-de-ji-ben-ke-xing-jie"><a class="zola-anchor" href="#tui-hua-de-ji-ben-ke-xing-jie" aria-label="Anchor link for: tui-hua-de-ji-ben-ke-xing-jie">退化的基本可行解</a></h2>
+<p>TODO.</p>
+<!-- *总是选择下标最小的进出基变量*能够保证单纯形法收敛. 这个规则称为 **Bland 规则**.  -->
+<h2 id="chu-shi-ji-ben-ke-xing-jie-de-que-ding"><a class="zola-anchor" href="#chu-shi-ji-ben-ke-xing-jie-de-que-ding" aria-label="Anchor link for: chu-shi-ji-ben-ke-xing-jie-de-que-ding">初始基本可行解的确定</a></h2>
+<p>TODO.</p>
+<h3 id="da-shu-fa"><a class="zola-anchor" href="#da-shu-fa" aria-label="Anchor link for: da-shu-fa">大数法</a></h3>
+<h3 id="liang-jie-duan-fa"><a class="zola-anchor" href="#liang-jie-duan-fa" aria-label="Anchor link for: liang-jie-duan-fa">两阶段法</a></h3>
+<h1 id="zong-jie"><a class="zola-anchor" href="#zong-jie" aria-label="Anchor link for: zong-jie">总结</a></h1>
+<p>对于标准形式的线性规划问题</p>
+<p>$$
+\begin{aligned}
+\max \quad &amp; \mathbf{c^\top} \mathbf{x} \newline
+\text{s.t.} \quad &amp; \mathbf{A}\mathbf{x} = \mathbf{b} \newline
+&amp; \mathbf{x} \ge \mathbf{0} \newline
+\end{aligned}
+$$
+$$
+(\mathbf{A} \in \mathbb{R}^{m\times n}; \mathbf{x}, \mathbf{c} \in \mathbb{R}^n;\mathbf{b} \in \mathbb{R}^m)
+$$</p>
+<p>在单纯形法中, 设某步的单纯形表如下</p>
+<p>$$
+\begin{pmatrix}
+1 &amp; 0 &amp; \cdots &amp; 0 &amp; a_{1,m+1} &amp; \cdots &amp; a_{1,n} &amp; b_1 \newline
+0 &amp; 1 &amp; \cdots &amp; 0 &amp; a_{2,m+1} &amp; \cdots &amp; a_{2,n} &amp; b_2 \newline
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \newline
+0 &amp; 0 &amp; \cdots &amp; 1 &amp; a_{m, m+1} &amp; \cdots &amp; a_{m,n} &amp; b_m \newline
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; c_{m+1} &amp; \cdots &amp; c_n &amp; z - z_0
+\end{pmatrix}
+$$</p>
+<p>其中 $x_1, \dots, x_m$ 为基变量. $b_1, \dots, b_m \ge 0$.</p>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>注</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>如果已经列出了这样的单纯形表, 那么原问题就不会是无解的, 因为 $(b_1, \dots, b_m, 0, \dots, 0) ^\top$ 就是一个解.</p>
+
+    </div>
+  
+</div>
+<p>单纯形法单步迭代的步骤为</p>
+<ol>
+<li>如果所有 $c_i$ 都非正, 则停止迭代. 当前的基本可行解就是最优解.</li>
+<li><strong>确定进基变量</strong>. 令 $c_k$ 为所有负的 $c_i$ 中下标最小者, 则选择 $x_k$ 进基. 此处假设为 $c_{m+1}$ 和 $x_{m+1}$.</li>
+<li><strong>确定出基变量</strong>. 如果 $a_{i,m+1} \le 0, \forall 1 \le i \le m$, 则问题的最优解无界. 否则, 令 $k = \arg\min_{\lbrace i| a_{i,m+1} &gt; 0\rbrace} \dfrac{b_i}{a_{i,m+1}}$, 即 $\dfrac{b_k}{a_{k,m+1}}$ 是 $\dfrac{b_i}{a_{i,m+1}}$ 中非负最小者, 选择第 $k$ 行对应的基变量出基. 如果有多个 $k$, 选择其中最小者. 此处假设为 $k=1$, $x_1$ 出基.</li>
+<li><strong>初等行变换</strong>. 将第 $1$ 行除以 $a_{1,m+1}$, 并乘以 $-a_{i, m+1}$ 加到第 $i$ 行上, 乘以 $-c_{m+1}$ 加到最后一行上.</li>
+</ol>
+
+        </section>
+    </article>
+</main>
+
+
+
+        
+
+    </div>
+</body>
+
+</html>

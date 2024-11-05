@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<html class="dark light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+    
+    
+    
+    <title>
+         为 Minecraft 命令设计的语言—— MCScript 介绍
+        
+    </title>
+
+        
+            <meta property="og:title" content="为 Minecraft 命令设计的语言—— MCScript 介绍" />
+        
+     
+
+     
+         
+     
+
+     
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://nervonment.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Nervonment&#x27;s Izakaya" href="https://nervonment.github.io/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://nervonment.github.io/theme/light.css />
+        <link rel="stylesheet" type="text/css" href="https://nervonment.github.io/theme/dark.css" media="(prefers-color-scheme: dark)" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://nervonment.github.io/js/themetoggle.js></script>
+    
+        <script>
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme("dark");
+            } else {
+                setTheme("light");
+            }
+        </script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://nervonment.github.io/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;nervonment.github.io&#x2F;>Nervonment&#x27;s Izakaya</a>
+
+        <div class="socials">
+            
+            <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;Nervonment&#x2F;" class="social">
+                <img alt=github src=https://nervonment.github.io/social_icons/github.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;space.bilibili.com&#x2F;401603096&#x2F;" class="social">
+                <img alt=bilibili src=https://nervonment.github.io/social_icons/bilibili.svg>
+            </a>
+            
+            <a rel="me" href="mailto:nervonment@outlook.com" class="social">
+                <img alt=email src=https://nervonment.github.io/social_icons/mail.svg>
+            </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+        <a href=https://nervonment.github.io/posts style="margin-left: 0.5em">帖子</a>
+        
+        <a href=https://nervonment.github.io/projects style="margin-left: 0.5em">项目</a>
+        
+        <a href=https://nervonment.github.io/about style="margin-left: 0.5em">关于</a>
+        
+        <a href=https://nervonment.github.io/tags style="margin-left: 0.5em">标签</a>
+        
+
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        为 Minecraft 命令设计的语言—— MCScript 介绍<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2024-08-13</time>
+                    
+
+                    
+                        :: Updated on <time>2024-08-13</time>
+                    
+
+                    
+
+                    
+                    
+                            <span class="tags-label"> :: Tags:</span>
+                            <span class="tags">
+                                    <a href="https://nervonment.github.io/tags/wan-ju/" class="post-tag">玩具</a>, 
+                                
+                                    <a href="https://nervonment.github.io/tags/minecraft/" class="post-tag">Minecraft</a>, 
+                                
+                                    <a href="https://nervonment.github.io/tags/mcscript/" class="post-tag">MCScript</a>
+                                
+                            </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <p><a href="https://github.com/Nervonment/mcscript">MCScript</a> 是我最近设计的一门简易的编程语言, 它的目标语言为 Minecraft 命令 (<code>.mcfunction</code>). 通过 MCScript, 你可以将使用高级编程语言编写的逻辑轻松地移植到 Minecraft 数据包中.</p>
+<p>MCScript 的编译器是我实现的第一个初具基本功能的编译器. 虽然它功能不多, 存在一些 bug, 生成的代码效率也比较糟糕, 但是它还是能干一些比较有意思的事情的. 下面是几个例子.</p>
+<h1 id="shi-li"><a class="zola-anchor" href="#shi-li" aria-label="Anchor link for: shi-li">示例</a></h1>
+<ul>
+<li>下面的 MCScript 代码的功能是在自己头顶向上生成一个10格高, 黄色和黑色混凝土交替的柱子:</li>
+</ul>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>fn generate_column() {
+</span><span>    let y = 2;
+</span><span>    while y &lt; 12 {
+</span><span>        if y % 2 {
+</span><span>            run_command!(&quot;setblock ~ ~{} ~ yellow_concrete&quot;, y);
+</span><span>        } else {
+</span><span>            run_command!(&quot;setblock ~ ~{} ~ black_concrete&quot;, y);
+</span><span>        }
+</span><span>        y += 1;
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p><img src="https://github.com/Nervonment/mcscript/raw/master/pictures/2024-07-22_14.37.48.png" alt="生成柱子" /></p>
+<ul>
+<li><a href="https://github.com/Nervonment/mcscript/blob/master/example/maze.mcs">example/maze.mcs</a> 中的代码能够生成一个 45×45 的迷宫:</li>
+</ul>
+<p><img src="https://github.com/Nervonment/mcscript/raw/master/pictures/2024-07-24_00.51.23.png" alt="生成迷宫" /></p>
+<ul>
+<li><a href="https://github.com/Nervonment/mcscript/blob/master/example/snake.mcs">example/snake.mcs</a> 中的代码能够生成一个可以玩贪吃蛇游戏的屏幕:</li>
+</ul>
+<p><img src="https://github.com/Nervonment/mcscript/raw/master/pictures/2024-07-28_17.02.57.png" alt="贪吃蛇" /></p>
+<h1 id="shi-yong-fang-fa"><a class="zola-anchor" href="#shi-yong-fang-fa" aria-label="Anchor link for: shi-yong-fang-fa">使用方法</a></h1>
+<p>那么我该怎么使用 MCScript 呢?</p>
+<p>MCScript 支持输出 Minecraft Java 版 1.21 版本的数据包 (数据包版本 48). 假如你已经编写了一些代码, 源代码文件是 <code>hello.mcs</code> <code>hi.mcs</code>. 想要将它编译为名为 <code>my_datapack</code> 的 Minecraft 数据包, 可以运行以下命令:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>mcsc hello.mcs hi.mcs -o my_datapack
+</span></code></pre>
+<p>之后, 编译器会输出两个数据包, 一个名为 <code>my_datapack</code>, 包含了你在 <code>hello.mcs</code> 和 <code>hi.mcs</code> 中编写的函数. 另一个名为 <code>mcscript</code>, 包含了运行 MCScript 所生成的数据包所依赖的一些函数.</p>
+<p>接下来, 将两个数据包复制到你的存档文件夹的 <code>datapack</code> 目录 (<code>.minecraft/saves/&lt;存档名字&gt;/datapacks/</code>) 下, 然后打开游戏, 进入存档. (如果在已经进入了游戏的时候更新了数据包, 需要在游戏内运行命令 <code>/reload</code> 重新加载. )</p>
+<p>在使用任何 MCScript 生成的数据包中的函数前, 需要先运行一次以下命令来初始化:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/function mscript:init
+</span></code></pre>
+<p>这条命令每个存档只用运行一次即可. <em>(除非你的代码出现了异常, 导致代表栈的命令存储 <code>memory:stack frame</code> 未能复位. 你可以使用 <code>/data get storage memory:stack frame</code> 查看栈是否正常, 正常情况下它的值应为 <code>[]</code>. )</em></p>
+<p>假设 <code>hello.mcs</code> 的内容如下:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// hello.mcs
+</span><span>
+</span><span>fn foo() {
+</span><span>    run_command!(&quot;say Hello, world! &quot;);
+</span><span>}
+</span></code></pre>
+<p>在游戏内, 想要运行函数 <code>foo</code>, 你需要运行如下命令:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/function hello:foo
+</span></code></pre>
+<p>然后你就可以在聊天栏看到消息 "Hello, world! ".</p>
+<p>注意, 如果你的源代码中定义了全局变量, 想要把全局变量设为你设定的初始值, 需要手动运行一些命令. 例如, 假如 <code>hi.mcs</code> 的内容如下:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// hi.mcs
+</span><span>
+</span><span>let c: int = 0;
+</span><span>
+</span><span>fn bar() {
+</span><span>    c += 1;
+</span><span>    run_command!(&quot;say c = {}&quot;, c);
+</span><span>}
+</span></code></pre>
+<p>要将全局变量 <code>c</code> 的值设置为 <code>0</code>, 需要运行如下命令:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/function hi:init
+</span></code></pre>
+<p>然后你可以尝试多次运行 <code>/function hi:bar</code>, 便可以看到 <code>c</code> 的值依次递增.</p>
+<p>如果你想了解更多内容, 有一篇<a href="https://github.com/Nervonment/mcscript/blob/master/MCScript.md">快速入门指南</a>可供参考.</p>
+<h1 id="shi-xian-ji-zhi"><a class="zola-anchor" href="#shi-xian-ji-zhi" aria-label="Anchor link for: shi-xian-ji-zhi">实现机制</a></h1>
+<p>绝大多数的计算机程序都无可避免地要操作数据. 因此要运行一个程序, 就必须用什么东西来存储和操作数据. Minecraft 提供了两种机制来通过命令操作数据 - <a href="https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4%E5%AD%98%E5%82%A8%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F?variant=zh-cn">命令存储</a> 和 <a href="https://zh.minecraft.wiki/w/%E8%AE%B0%E5%88%86%E6%9D%BF">记分板</a>. 在 MCScript 的实现中, 我使用了<strong>命令存储</strong>来模拟内存, <strong>记分板</strong>来模拟寄存器.</p>
+<p>在 Minecraft 中, 可以用下面的命令来存储某个值:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/data modify storage &lt;target&gt; &lt;targetPath&gt; set value &lt;value&gt;
+</span></code></pre>
+<p>其中 <code>storage &lt;target&gt;</code> 是<strong>命令存储</strong>的名字, 你可以把它理解成一个作用域或者命名空间; <code>&lt;targetPath&gt;</code> 是你要存储的数据在这条<strong>命令存储</strong>中的位置, 你可以把它理解成作用域中的变量; 而 <code>&lt;value&gt;</code> 是你要向这个变量存储的值. 例如:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/data modify storage foo:bar var1 set value 114514
+</span></code></pre>
+<p><code>&lt;value&gt;</code> 可以是一个数组甚至对象, 这样一来, 我们就可以模拟栈, 从而实现函数:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># 初始化栈
+</span><span>/data modify storage memory:stack frame set value []
+</span><span>
+</span><span># 调用某个函数时, 压栈
+</span><span># `append` 用于向数组中添加元素, 这里添加了一个对象, 
+</span><span># 之后就可以向这个对象里面添加字段作为栈帧的局部变量使用. 
+</span><span>/data modify storage memory:stack frame append value {}
+</span><span>
+</span><span># 将局部变量 `a` 赋值为 `114514`
+</span><span># `/data` 命令中, 使用 `[-1]` 可以取数组的最后一个元素, 即当前的栈帧. 
+</span><span>/data modify storage memory:stack frame[-1].a set value 114514
+</span><span>
+</span><span># 函数返回, 弹栈
+</span><span># `remove` 可以从命令存储中删除某一项, 也可以删除数组中的某一个元素或者对象的某一个字段.
+</span><span># 这里把当前栈帧删除, 从而将栈顶恢复到调用者的栈帧. 
+</span><span>/data remove storage memory:stack frame[-1]
+</span></code></pre>
+<p>看起来命令存储的功能很强大, 但是仅仅用命令存储, 是无法对数据进行运算的. 这时就必须依靠记分板.</p>
+<p>Minecraft 中的记分板有<strong>记分项</strong>和<strong>分数持有者</strong>的概念. 理解这两个概念很简单, 想象某一场考试的结果, 像数学, 物理这样的科目就是记分项, 而你在内的所有的学生就是分数持有者. 在 MCScript 中, 使用不同的记分项并没有意义, 所有需要参与运算的临时数据都存储在记分项 <code>registers</code> (寄存器)下, 而分数持有者则对应各个寄存器, 分别命名为 <code>r0</code>, <code>r1</code>, <code>r2</code>, ... 我们首先使用以下命令创建记分项 <code>registers</code>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/scoreboard objectives add registers dummy &quot;寄存器&quot;
+</span><span># 如果你想实时观察各个寄存器的值, 可以使用下面这条命令
+</span><span>/scoreboard objectives setdisplay sidebar registers
+</span></code></pre>
+<p>可以用以下命令设置某个分数持有者(寄存器)的分数(值):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/scoreboard players set r0 registers 114514
+</span><span># 只能设置整数值
+</span></code></pre>
+<p>要对寄存器中的值进行运算, 可以用以下命令:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/scoreboard players operation &lt;r_dest&gt; registers &lt;op&gt; &lt;r_src&gt; registers
+</span><span># 上面命令中的 `registers` 就是我们作为寄存器使用的记分项, 实际应用中也可能是其他的记分项
+</span></code></pre>
+<p>其中 <code>op</code> 是运算的种类, 有以下几种:</p>
+<ul>
+<li><code>=</code> 赋值: 将 <code>r_src</code> 赋给 <code>r_dest</code> .</li>
+<li><code>+=</code> 求和赋值: 将 <code>r_src</code> 和 <code>r_dest</code> 的和赋给 <code>r_dest</code> .</li>
+<li><code>-=</code> 求差赋值: 将 <code>r_src</code> 和 <code>r_dest</code> 的差赋给 <code>r_dest</code> .</li>
+<li><code>*=</code> 求积赋值: 将 <code>r_src</code> 和 <code>r_dest</code> 的积赋给 <code>r_dest</code> .</li>
+<li><code>/=</code> 求商(整数除法)赋值: 将 <code>r_src</code> 和 <code>r_dest</code> 相除, 取整数除法所得的商赋给 <code>r_dest</code>.</li>
+<li><code>%=</code> 求余(取模)赋值: 将 <code>r_src</code> 和 <code>r_dest</code> 相除, 取整数除法所得的正整数余数赋给 <code>r_dest</code> .</li>
+<li><code>&gt;&lt;</code> 交换: 交换 <code>r_src</code> 和 <code>r_dest</code> .</li>
+<li><code>&lt;</code> 取较小值: 仅当 <code>r_src</code> 较小时, 将 <code>r_src</code> 赋给 <code>r_dest</code> .</li>
+<li><code>&gt;</code> 取较大值: 仅当 <code>r_src</code> 较大时, 将 <code>r_src</code> 赋给 <code>r_dest</code> .</li>
+</ul>
+<p>我们还需要一种在记分板和命令存储中互相传递数据的方法. 经过我的调查, 只有 <code>/execute store</code> 命令能够实现这一点 (说实话, 谁第一时间会想得到竟然是这个命令啊):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># 将寄存器 `r0` 的值复制到局部变量 `a` 
+</span><span>/execute store result storage memory:stack frame[-1].a int 1.0 run scoreboard players get r0 registers
+</span><span>
+</span><span># 将局部变量 `a` 的值复制到寄存器 `r0` 
+</span><span>/execute store result score r0 registers run data get storage memory:stack frame[-1].a
+</span></code></pre>
+<p>有了上面的东西, 就已经能够实现一个初具雏形的编程语言. 然而要做到图灵完备, 还需要有跳转机制, 这个就留待下一篇文章再继续叙述了.</p>
+<h1 id="xie-zai-zui-hou"><a class="zola-anchor" href="#xie-zai-zui-hou" aria-label="Anchor link for: xie-zai-zui-hou">写在最后</a></h1>
+<p>MCScript 并不是第一个把高级语言编译成 Minecraft 数据包的尝试, 类似的项目还有 <a href="https://github.com/SethBling/cbscript">CBScript</a> 和 <a href="https://github.com/MinecraftFunctionPlusPlus/MCFPP">MCFPP</a> 等. <del>(叠甲环节)</del> 我做 MCScript 最初只是为了试着自己写一个编译器玩玩, 结果没想到还真的挺有意思的. MCScript 的编译器 mcsc 是用 Rust 编写的, 然而事实上我并不是很熟悉 Rust (指脱离了 rust-analyzer 和 inlay hint 就没办法写代码), 也没有系统学过编译原理. 因此 mcsc 还有很多实现得不好和没有实现的地方, 也有一些漏洞. 我还是希望能够继续完善 MCScript 的, 只是个人精力和能力有限. 综上所述, 欢迎您<a href="https://github.com/Nervonment/mcscript/issues/new">提供指导意见</a>.</p>
+
+        </section>
+    </article>
+</main>
+
+
+
+        
+
+    </div>
+</body>
+
+</html>
