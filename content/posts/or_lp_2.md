@@ -89,8 +89,21 @@ $$0=\mathbf{c}^\top\mathbf{x}-\mathbf{c}^\top\mathbf{x}\le\mathbf{y}^\top\mathbf
 
 ## 灵敏度分析
 
+在对称形式
+
+$$\begin{aligned}\max \quad & \mathbf{c}^\top \mathbf{x}\newline \text{s.t.} \quad & \mathbf{A}\mathbf{x}\le \mathbf{b}\newline & \mathbf{x} \ge \mathbf{0} \end{aligned}$$ 
+
+ $$\begin{aligned}\min \quad & \mathbf{b}^\top \mathbf{y}\newline \text{s.t.} \quad & \mathbf{A^\top}\mathbf{y}\ge \mathbf{c}\newline & \mathbf{y} \ge \mathbf{0} \end{aligned}$$ 
+
+中, 设对偶问题的最优解为 $\hat{\mathbf{y}}$, 则由强对偶性知, 原问题的最优目标值为 $\hat{z}=\hat{\mathbf{y}}^\top \mathbf{b}$. 称最优目标值关于 $\mathbf{b}$ 的梯度 $\hat{\mathbf{y}}$ 为 $\mathbf{b}$ 的影子价格. 
+
 ## 已知问题的最优解, 修改问题, 求新的最优解
 
+- **修改目标函数**: 使用单纯形法继续迭代.
+- **修改常数项 $\mathbf{b}$**: 使用对偶单纯形法继续迭代. 
+- **增加约束**: 看当前最优解是否满足约束, 如果不, 引入人工变量, 使用对偶单纯形法继续迭代.
+- **增加变量**: 看这个变量的检验数是否非正, 如果不, 使用单纯形法继续迭代. 
+- **修改系数矩阵 $\mathbf{A}$**: ???
 
 # 对偶单纯形法
 
