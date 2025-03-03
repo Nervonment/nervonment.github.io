@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<html class="dark light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+    
+    
+    
+    <title>
+         Aseprite 的桌面应用程序库 LAF 体验 #1
+        
+    </title>
+
+        
+            <meta property="og:title" content="Aseprite 的桌面应用程序库 LAF 体验 #1" />
+        
+     
+
+     
+         
+     
+
+     
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://nervonment.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Nervonment&#x27;s Izakaya" href="https://nervonment.github.io/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://nervonment.github.io/theme/light.css />
+        <link rel="stylesheet" type="text/css" href="https://nervonment.github.io/theme/dark.css" media="(prefers-color-scheme: dark)" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://nervonment.github.io/js/themetoggle.js></script>
+    
+        <script>
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme("dark");
+            } else {
+                setTheme("light");
+            }
+        </script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://nervonment.github.io/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;nervonment.github.io&#x2F;>Nervonment&#x27;s Izakaya</a>
+
+        <div class="socials">
+            
+            <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;Nervonment&#x2F;" class="social">
+                <img alt=github src=https://nervonment.github.io/social_icons/github.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;space.bilibili.com&#x2F;401603096&#x2F;" class="social">
+                <img alt=bilibili src=https://nervonment.github.io/social_icons/bilibili.svg>
+            </a>
+            
+            <a rel="me" href="mailto:nervonment@outlook.com" class="social">
+                <img alt=email src=https://nervonment.github.io/social_icons/mail.svg>
+            </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+        <a href=https://nervonment.github.io/posts style="margin-left: 0.5em">帖子</a>
+        
+        <a href=https://nervonment.github.io/projects style="margin-left: 0.5em">项目</a>
+        
+        <a href=https://nervonment.github.io/about style="margin-left: 0.5em">关于</a>
+        
+        <a href=https://nervonment.github.io/tags style="margin-left: 0.5em">标签</a>
+        
+
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        Aseprite 的桌面应用程序库 LAF 体验 #1<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2025-03-03</time>
+                    
+
+                    
+                        :: Updated on <time>2025-03-03</time>
+                    
+
+                    
+
+                    
+                    
+                            <span class="tags-label"> :: Tags:</span>
+                            <span class="tags">
+                                    <a href="https://nervonment.github.io/tags/c/" class="post-tag">C++</a>, 
+                                
+                                    <a href="https://nervonment.github.io/tags/laf/" class="post-tag">LAF</a>
+                                
+                            </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <p><a href="https://github.com/aseprite/laf">LAF</a> 是著名的像素画绘画软件 <a href="https://www.aseprite.org/">Aseprite</a> 使用的库，使用的语言是 C++。在此之前，我听说过的 C++ 桌面应用程序库很少，所以今天就来试一试，编译一下所给的例子。我不熟悉 CMake，所以配置过程会记录得比较详细，方便自己以后查阅。</p>
+<h1 id="an-zhuang-yi-lai"><a class="zola-anchor" href="#an-zhuang-yi-lai" aria-label="Anchor link for: an-zhuang-yi-lai">安装依赖</a></h1>
+<ul>
+<li>Skia。LAF 和 Aseprite 使用的版本是<a href="https://github.com/aseprite/skia/releases/tag/m102-861e4743af">这个</a>。我使用的是 Windows 系统，所以下载 <a href="https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-Windows-Release-x64.zip">Skia-Windows-Release-x64.zip</a>，并解压到 <code>D:\skia</code> 中。</li>
+<li>Ninja。可以去其<a href="https://ninja-build.org/">官网</a>下载。Windows 上可以用 scoop 安装：<code>scoop install ninja</code>。</li>
+</ul>
+<h1 id="zai-visual-studio-zhong-pei-zhi-he-bian-yi"><a class="zola-anchor" href="#zai-visual-studio-zhong-pei-zhi-he-bian-yi" aria-label="Anchor link for: zai-visual-studio-zhong-pei-zhi-he-bian-yi">在 Visual Studio 中配置和编译</a></h1>
+<p>克隆 <a href="https://github.com/aseprite/laf">LAF 的仓库</a>。注意，LAF 的仓库里包含子模块，克隆时要加上 <code>--recursive</code> 选项一并克隆：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git clone --recursive https://github.com/aseprite/laf
+</span></code></pre>
+<p>在 Windows 上写 C++ 项目，用 Visual Studio 会比较方便。用 Visual Studio 打开 <code>laf</code> 文件夹。选择「项目」-&gt;「laf 的 CMake 设置」，点击右上角的「编辑 JSON」打开 CMake 配置文件 <code>CMakeSettings.json</code>，在 x64-Debug 配置的 <code>cmakeCommandArgs</code> 字段中加上下面的内容，以指定 Skia 的位置：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>-DLAF_BACKEND=skia  -DSKIA_DIR=D:\\skia  -DSKIA_LIBRARY_DIR=D:\\skia\\out\\Release-x64
+</span></code></pre>
+<p>保存 <code>CMakeSettings.json</code>，Visual Studio 会自动执行一次 CMake。输出中可以看到下面的信息：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>[CMake] -- skia dir: D:/skia
+</span><span>[CMake] -- skia library: D:/skia/out/Release-x64/skia.lib
+</span><span>[CMake] -- skia library dir: D:/skia/out/Release-x64
+</span><span>[CMake] -- Configuring done (0.7s)
+</span><span>[CMake] -- Generating done (0.4s)
+</span><span>[CMake] -- Build files have been written to: D:/source/laf/out/build/x64-Debug
+</span><span>已提取 CMake 变量。
+</span><span>已提取源文件和标头。
+</span><span>已提取代码模型。
+</span><span>已提取工具链配置。
+</span><span>已提取包含路径。
+</span><span>CMake 生成完毕。
+</span></code></pre>
+<p>然后在「解决方案资源管理器」的顶部找到「房子图标」右边的「左下角带有 Visual Studio LOGO 的列表图标」，点击它，下面会出现「文件夹视图」和「CMake 目标视图」。默认的视图是「文件夹视图」，现在我们双击「CMake 目标视图」，就可以看到 VS 自动生成的所有 CMake 目标，里面大部分都是测试，今天要编译的是 <code>laf-examples</code> 目标。找到它，右键选择「生成 laf-examples」。如果顺利的话，你会看到 <code>complextextlayout.cpp</code> 中报了很多错误。我把其中的阿拉伯文删除后，仍然无法解决，只好打开 <code>examples/CMakeLists.txt</code>，注释掉 <code>laf_add_example(complextextlayout GUI)</code>，放弃编译这个示例。</p>
+<p>然后重新尝试生成。接下来迎接我们的是 13624 个 LNK2038 错误，其中大部分说的是「值 0 不匹配值 2」。经查阅发现是在 Debug 模式下使用了 Release 版本的静态库所致。<code>aseprite/skia</code> 的 Releases 页面中只提供了 Release 版本的静态库，如果要用 Debug 版本的话，还要自己用源代码编译一遍，今天就先不折腾了。再次打开 CMake 配置文件 <code>CMakeSettings.json</code>，把 x64-Debug 配置复制一份，然后把 <code>name</code> 字段改成 <code>x64-Release</code>，<code>configurationType</code> 字段改成 <code>Release</code>（等效于手动使用 CMake 时添加 <code>-DCMAKE_BUILD_TYPE=Release</code> 选项）。然后在「绿色三角形调试按钮」左边的下拉框中选择 x64-Release。重新尝试生成即可。</p>
+<h1 id="shi-li-fen-xi"><a class="zola-anchor" href="#shi-li-fen-xi" aria-label="Anchor link for: shi-li-fen-xi">示例分析</a></h1>
+<p><code>examples</code> 中提供了很多示例，包括悬浮窗、文件拖拽甚至着色器等示例，展示了 LAF 比较完善的功能。这次先从最基础的 <code>hello_laf.cpp</code> 开始，看看怎么用 LAF 创建一个桌面程序。</p>
+<p>可以看到，程序的入口是 <code>int app_main(int argc, char* argv[])</code>。（<em>需要提醒的是，函数签名中的 <code>argc</code> 和 <code>argv</code> 参数，以及最后的 <code>return 0</code> 都是必须的，不要像平常一样因为偷懒省掉。</em>）上来之后，先 make 一个 <code>System</code> 对象 <code>system</code>（<code>System</code> 类中提供了创建窗口等接口），然后用它设置应用模式为 GUI 模式，创建一个 400 × 300 大小的窗口 <code>window</code>。接下来设置标题、鼠标指针（非必须）：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>os::SystemRef system = os::</span><span style="color:#bf616a;">make_system</span><span>();
+</span><span>system-&gt;</span><span style="color:#bf616a;">setAppMode</span><span>(os::AppMode::GUI);
+</span><span>
+</span><span>os::WindowRef window = system-&gt;</span><span style="color:#bf616a;">makeWindow</span><span>(</span><span style="color:#d08770;">400</span><span>, </span><span style="color:#d08770;">300</span><span>);
+</span><span>window-&gt;</span><span style="color:#bf616a;">setTitle</span><span>(&quot;</span><span style="color:#a3be8c;">Hello World</span><span>&quot;);
+</span><span>window-&gt;</span><span style="color:#bf616a;">setCursor</span><span>(os::NativeCursor::Arrow);
+</span></code></pre>
+<p>然后设置窗口大小变化时的回调函数，直接设置为窗口绘制的函数 <code>draw_window</code> 即可。<code>finishLaunching</code> 和 <code>activateApp</code> 照抄即可，想了解的话可以参考代码注释中给出的说明。</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>system-&gt;</span><span style="color:#bf616a;">handleWindowResize </span><span>= draw_window;
+</span><span>system-&gt;</span><span style="color:#bf616a;">finishLaunching</span><span>();
+</span><span>system-&gt;</span><span style="color:#bf616a;">activateApp</span><span>();
+</span></code></pre>
+<p>接下来是主循环。创建一个 <code>EventQueue</code> 对象，然后在循环中等待事件（鼠标、键盘等）发生。注意在循环中使用的是 <code>EventQueue</code> 的 <code>getEvent</code> 方法，这个方法会一直等待到有事件发生，也就是说如果你什么也不做的话，之后的代码就不会执行。与之相对的是 <code>queueEvent</code> 方法，如果没有事情发生的话，就会得到一个 <code>Event::None</code> 类型的事件。<em>（至于注释里面提到的 <code>true</code> 参数，我反正是没有看到有什么 <code>true</code> 参数，可能是改了代码忘记改注释了吧 (;_:)，还真是如 <code>README.md</code> 中所说「API 尚未稳定」。）</em></p>
+<p>这个示例使用的是懒惰更新策略，在主循环中维护了一个 <code>redraw</code> 变量，只在需要更新窗口内容时，将这个变量设置为 <code>true</code>，重新绘制一次窗口。</p>
+<p>然后我们来看窗口绘制函数 <code>draw_window</code>。首先获取窗口的 <code>surface</code> 对象，接下来的绘制都是在这个 <code>surface</code> 上，用一个 <code>Paint</code> 对象进行。注意，和平常画画一样，绘制之前需要先把画板（窗口）清理干净：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>p.</span><span style="color:#bf616a;">color</span><span>(gfx::</span><span style="color:#bf616a;">rgba</span><span>(</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#d08770;">0</span><span>, </span><span style="color:#d08770;">0</span><span>));
+</span><span>p.</span><span style="color:#bf616a;">style</span><span>(os::Paint::Fill);
+</span><span>surface-&gt;</span><span style="color:#bf616a;">drawRect</span><span>(rc, p);
+</span></code></pre>
+<p>否则窗口内容更新时，重新绘制的内容会叠在旧内容的上面。</p>
+<p>绘制的操作都很容易理解，这里说一下 <code>draw_text</code> 函数，要绘制中文字符的话，不能直接传中文字符串，而是要先转换成 UTF-8 编码：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>os::</span><span style="color:#8fa1b3;">draw_text</span><span>(</span><span style="color:#bf616a;">surface</span><span>, </span><span style="color:#bf616a;">nullptr</span><span>, base::</span><span style="color:#bf616a;">to_utf8</span><span>(</span><span style="color:#b48ead;">L</span><span>&quot;</span><span style="color:#a3be8c;">你好世界</span><span>&quot;), gfx::</span><span style="color:#bf616a;">Point</span><span>(</span><span style="color:#d08770;">10</span><span>, </span><span style="color:#d08770;">20</span><span>), &amp;</span><span style="color:#bf616a;">p</span><span>, os::TextAlign::</span><span style="color:#bf616a;">Left</span><span>);
+</span></code></pre>
+<p>最后这三句也是先照抄即可：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">if </span><span>(window-&gt;</span><span style="color:#bf616a;">isVisible</span><span>())
+</span><span>    window-&gt;</span><span style="color:#bf616a;">invalidateRegion</span><span>(gfx::</span><span style="color:#bf616a;">Region</span><span>(rc));
+</span><span style="color:#b48ead;">else
+</span><span>    window-&gt;</span><span style="color:#bf616a;">setVisible</span><span>(</span><span style="color:#d08770;">true</span><span>);
+</span><span>window-&gt;</span><span style="color:#bf616a;">swapBuffers</span><span>();
+</span></code></pre>
+
+        </section>
+    </article>
+</main>
+
+
+
+        
+
+    </div>
+</body>
+
+</html>
