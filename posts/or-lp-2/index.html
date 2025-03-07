@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<html class="dark light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+    
+    
+    
+    <title>
+         线性规划——对偶性和对偶单纯形法
+        
+    </title>
+
+        
+            <meta property="og:title" content="线性规划——对偶性和对偶单纯形法" />
+        
+     
+
+     
+         
+     
+
+     
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://nervonment.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Nervonment&#x27;s Izakaya" href="https://nervonment.github.io/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://nervonment.github.io/theme/light.css />
+        <link rel="stylesheet" type="text/css" href="https://nervonment.github.io/theme/dark.css" media="(prefers-color-scheme: dark)" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://nervonment.github.io/js/themetoggle.js></script>
+    
+        <script>
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme("dark");
+            } else {
+                setTheme("light");
+            }
+        </script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://nervonment.github.io/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;nervonment.github.io&#x2F;>Nervonment&#x27;s Izakaya</a>
+
+        <div class="socials">
+            
+            <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;Nervonment&#x2F;" class="social">
+                <img alt=github src=https://nervonment.github.io/social_icons/github.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;space.bilibili.com&#x2F;401603096&#x2F;" class="social">
+                <img alt=bilibili src=https://nervonment.github.io/social_icons/bilibili.svg>
+            </a>
+            
+            <a rel="me" href="mailto:nervonment@outlook.com" class="social">
+                <img alt=email src=https://nervonment.github.io/social_icons/mail.svg>
+            </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+        <a href=https://nervonment.github.io/posts style="margin-left: 0.5em">帖子</a>
+        
+        <a href=https://nervonment.github.io/projects style="margin-left: 0.5em">项目</a>
+        
+        <a href=https://nervonment.github.io/about style="margin-left: 0.5em">关于</a>
+        
+        <a href=https://nervonment.github.io/tags style="margin-left: 0.5em">标签</a>
+        
+
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        线性规划——对偶性和对偶单纯形法<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2024-10-31</time>
+                    
+
+                    
+                        :: Updated on <time>2024-10-31</time>
+                    
+
+                    
+
+                    
+                    
+                            <span class="tags-label"> :: Tags:</span>
+                            <span class="tags">
+                                    <a href="https://nervonment.github.io/tags/ke-cheng-yun-chou-xue/" class="post-tag">课程「运筹学」</a>
+                                
+                            </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <h1 id="dui-ou-wen-ti"><a class="zola-anchor" href="#dui-ou-wen-ti" aria-label="Anchor link for: dui-ou-wen-ti">对偶问题</a></h1>
+<table><thead><tr><th></th><th>原问题</th><th>对偶问题</th></tr></thead><tbody>
+<tr><td>对称形式</td><td>$$\begin{aligned}\max \quad &amp; \mathbf{c}^\top \mathbf{x}\newline \text{s.t.} \quad &amp; \mathbf{A}\mathbf{x}\le \mathbf{b}\newline &amp; \mathbf{x} \ge \mathbf{0} \end{aligned}$$</td><td>$$\begin{aligned}\min \quad &amp; \mathbf{b}^\top \mathbf{y}\newline \text{s.t.} \quad &amp; \mathbf{A^\top}\mathbf{y}\ge \mathbf{c}\newline &amp; \mathbf{y} \ge \mathbf{0} \end{aligned}$$</td></tr>
+<tr><td>非对称形式</td><td>$$\begin{aligned}\max \quad &amp; \mathbf{c}^\top \mathbf{x}\newline \text{s.t.} \quad &amp; \mathbf{A}\mathbf{x} = \mathbf{b}\newline &amp; \mathbf{x} \ge \mathbf{0} \end{aligned}$$</td><td>$$\begin{aligned}\min \quad &amp; \mathbf{b}^\top \mathbf{y}\newline \text{s.t.} \quad &amp; \mathbf{A^\top}\mathbf{y}\ge \mathbf{c}\end{aligned}$$</td></tr>
+</tbody></table>
+<ul>
+<li>原问题约束条件的一行对应了对偶问题的一个变量.</li>
+<li>原问题约束条件中一行变成等式, 则对偶问题的相应变量变成自由变量.</li>
+</ul>
+<h2 id="ruo-dui-ou-yin-li"><a class="zola-anchor" href="#ruo-dui-ou-yin-li" aria-label="Anchor link for: ruo-dui-ou-yin-li">弱对偶引理</a></h2>
+<p>$$
+\mathbf{c}^\top \mathbf{x} \le \mathbf{b}^\top \mathbf{y}
+$$</p>
+<p>证明:</p>
+<p>(对称形式)
+$$
+\mathbf{c}^\top\mathbf{x} \le \mathbf{y}^\top\mathbf{A}\mathbf{x} \le \mathbf{y}^\top \mathbf{b}
+$$</p>
+<p>(非对称形式)
+$$
+\mathbf{c}^\top\mathbf{x} \le \mathbf{y}^\top\mathbf{A}\mathbf{x} = \mathbf{y}^\top \mathbf{b}
+$$</p>
+<p>注意: 在规范形式的证明中, 因为 $\mathbf{x}\ge\mathbf{0}$ 和 $\mathbf{y}\ge\mathbf{0}$, 才能在不等式约束两边同时乘 $\mathbf{x}$ 和 $\mathbf{y}$; 在标准形式的证明中, 因为 $\mathbf{x}\ge\mathbf{0}$, 才能在对偶问题的不等式约束中两边同时乘 $\mathbf{x}$.</p>
+<h2 id="dui-ou-ding-li"><a class="zola-anchor" href="#dui-ou-ding-li" aria-label="Anchor link for: dui-ou-ding-li">对偶定理</a></h2>
+<p>如果原问题有有限最优解, 则对偶问题也有有限最优解, 且两者对应的目标函数值相等; 如果原问题无解, 则对偶问题无界.</p>
+<p>如果原问题的最优基础可行解对应的基为 $\mathbf{B}$, 那么 $\mathbf{B}^{-\top}\mathbf{c}_\mathbf{B}$ 是对偶问题的最优解.</p>
+<h3 id="cong-yuan-wen-ti-de-zui-zhong-dan-chun-xing-biao-zhi-jie-de-dao-dui-ou-wen-ti-de-zui-you-jie"><a class="zola-anchor" href="#cong-yuan-wen-ti-de-zui-zhong-dan-chun-xing-biao-zhi-jie-de-dao-dui-ou-wen-ti-de-zui-you-jie" aria-label="Anchor link for: cong-yuan-wen-ti-de-zui-zhong-dan-chun-xing-biao-zhi-jie-de-dao-dui-ou-wen-ti-de-zui-you-jie">从原问题的最终单纯形表直接得到对偶问题的最优解</a></h3>
+<p>设原问题初始单纯形表为</p>
+<p>$$
+\begin{pmatrix}
+\mathbf{B} &amp; \mathbf{N} &amp; \mathbf{I} &amp; \mathbf{b} \newline
+\mathbf{c} _\mathbf{B} ^\top &amp; \mathbf{c} _\mathbf{N} ^\top &amp; \mathbf{0}^\top &amp; z
+\end{pmatrix}
+$$</p>
+<p>最终单纯形表为在原单纯形表上左乘 $\begin{pmatrix}\mathbf{B}^{-1} &amp; \mathbf{0} \newline -\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1} &amp; 1\end{pmatrix}$, 即</p>
+<p>$$
+\begin{pmatrix}
+\mathbf{I} &amp; \mathbf{B}^{-1}\mathbf{N} &amp; \mathbf{B}^{-1} &amp; \mathbf{B}^{-1}\mathbf{b} \newline
+\mathbf{0}^\top &amp; \mathbf{c} _\mathbf{N} ^\top-\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1}\mathbf{N} &amp; -\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1} &amp; z-\mathbf{c} _\mathbf{B} ^\top\mathbf{B}^{-1}\mathbf{b}
+\end{pmatrix}
+$$</p>
+<p>由此可以看出对偶问题的最优解就是原问题的初始基变量对应的列构成的向量的相反向量.</p>
+<h2 id="hu-bu-song-chi-ding-li"><a class="zola-anchor" href="#hu-bu-song-chi-ding-li" aria-label="Anchor link for: hu-bu-song-chi-ding-li">互补松弛定理</a></h2>
+<p>设 $\mathbf{x}$ 和 $\mathbf{y}$ 分别是原问题和对偶问题的最优解, 则</p>
+<p>$$(\mathbf{y}^\top\mathbf{A}-\mathbf{c}^\top)\mathbf{x}=0$$</p>
+<p>证明:</p>
+<p>(非对称形式)
+$$0=\mathbf{y}^\top\mathbf{b}-\mathbf{c}^\top\mathbf{x}=\mathbf{y}^\top\mathbf{A}\mathbf{x}-\mathbf{c}^\top\mathbf{x} =(\mathbf{y}^\top\mathbf{A}-\mathbf{c}^\top)\mathbf{x}$$</p>
+<p>(对称形式)
+$$0=\mathbf{y}^\top\mathbf{b}-\mathbf{c}^\top\mathbf{x}\ge\mathbf{y}^\top\mathbf{A}\mathbf{x}-\mathbf{c}^\top\mathbf{x} =(\mathbf{y}^\top\mathbf{A}-\mathbf{c}^\top)\mathbf{x}$$
+$$0=\mathbf{c}^\top\mathbf{x}-\mathbf{c}^\top\mathbf{x}\le\mathbf{y}^\top\mathbf{A}\mathbf{x} -\mathbf{c}^\top\mathbf{x} =(\mathbf{y}^\top\mathbf{A}-\mathbf{c}^\top)\mathbf{x}$$</p>
+<p>推论:</p>
+<ul>
+<li>$x_i \ne 0 \Rightarrow \mathbf{a}_i \mathbf{y}=c_i$</li>
+<li>$\mathbf{a}_i \mathbf{y} \ne c_i \Rightarrow x_i = 0$</li>
+</ul>
+<h2 id="ling-min-du-fen-xi"><a class="zola-anchor" href="#ling-min-du-fen-xi" aria-label="Anchor link for: ling-min-du-fen-xi">灵敏度分析</a></h2>
+<p>在对称形式</p>
+<p>$$\begin{aligned}\max \quad &amp; \mathbf{c}^\top \mathbf{x}\newline \text{s.t.} \quad &amp; \mathbf{A}\mathbf{x}\le \mathbf{b}\newline &amp; \mathbf{x} \ge \mathbf{0} \end{aligned}$$</p>
+<p>$$\begin{aligned}\min \quad &amp; \mathbf{b}^\top \mathbf{y}\newline \text{s.t.} \quad &amp; \mathbf{A^\top}\mathbf{y}\ge \mathbf{c}\newline &amp; \mathbf{y} \ge \mathbf{0} \end{aligned}$$</p>
+<p>中, 设对偶问题的最优解为 $\hat{\mathbf{y}}$, 则由强对偶性知, 原问题的最优目标值为 $\hat{z}=\hat{\mathbf{y}}^\top \mathbf{b}$. 称最优目标值关于 $\mathbf{b}$ 的梯度 $\hat{\mathbf{y}}$ 为 $\mathbf{b}$ 的影子价格.</p>
+<h2 id="yi-zhi-wen-ti-de-zui-you-jie-xiu-gai-wen-ti-qiu-xin-de-zui-you-jie"><a class="zola-anchor" href="#yi-zhi-wen-ti-de-zui-you-jie-xiu-gai-wen-ti-qiu-xin-de-zui-you-jie" aria-label="Anchor link for: yi-zhi-wen-ti-de-zui-you-jie-xiu-gai-wen-ti-qiu-xin-de-zui-you-jie">已知问题的最优解, 修改问题, 求新的最优解</a></h2>
+<ul>
+<li><strong>修改目标函数</strong>: 使用单纯形法继续迭代.</li>
+<li><strong>修改常数项 $\mathbf{b}$</strong>: 使用对偶单纯形法继续迭代.</li>
+<li><strong>增加约束</strong>: 看当前最优解是否满足约束, 如果不, 引入人工变量, 使用对偶单纯形法继续迭代.</li>
+<li><strong>增加变量</strong>: 看这个变量的检验数是否非正, 如果不, 使用单纯形法继续迭代.</li>
+<li><strong>修改系数矩阵 $\mathbf{A}$</strong>: ???</li>
+</ul>
+<h1 id="dui-ou-dan-chun-xing-fa"><a class="zola-anchor" href="#dui-ou-dan-chun-xing-fa" aria-label="Anchor link for: dui-ou-dan-chun-xing-fa">对偶单纯形法</a></h1>
+<p>对于标准形式的线性规划问题</p>
+<p>$$
+\begin{aligned}
+\max \quad &amp; \mathbf{c^\top} \mathbf{x} \newline
+\text{s.t.} \quad &amp; \mathbf{A}\mathbf{x} = \mathbf{b} \newline
+&amp; \mathbf{x} \ge \mathbf{0} \newline
+\end{aligned}
+$$
+$$
+(\mathbf{A} \in \mathbb{R}^{m\times n}; \mathbf{x}, \mathbf{c} \in \mathbb{R}^n;\mathbf{b} \in \mathbb{R}^m)
+$$</p>
+<p>在对偶单纯形法中, 设某步的单纯形表如下</p>
+<p>$$
+\begin{pmatrix}
+1 &amp; 0 &amp; \cdots &amp; 0 &amp; a_{1,m+1} &amp; \cdots &amp; a_{1,n} &amp; b_1 \newline
+0 &amp; 1 &amp; \cdots &amp; 0 &amp; a_{2,m+1} &amp; \cdots &amp; a_{2,n} &amp; b_2 \newline
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \newline
+0 &amp; 0 &amp; \cdots &amp; 1 &amp; a_{m, m+1} &amp; \cdots &amp; a_{m,n} &amp; b_m \newline
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; c_{m+1} &amp; \cdots &amp; c_n &amp; z - z_0
+\end{pmatrix}
+$$</p>
+<p>其中 $x_1, \dots, x_m$ 为基变量. $c_{m+1}, \dots, c_n \le 0$.</p>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>注</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>如果已经列出了这样的单纯形表, 那么原问题的解就不会是无界的, 因为 $z = z_0 + c_{m+1}x_{m+1} + \dots + c_n x_n \le z_0$.</p>
+
+    </div>
+  
+</div>
+<p>对偶单纯形法单步迭代的步骤为</p>
+<ol>
+<li>如果所有 $b_i$ 都非负, 则停止迭代. 当前的基本可行解就是最优解.</li>
+<li><strong>确定出基变量</strong>. 令 $b_k$ 为所有负的 $b_i$ 中下标最小者, 则选择第 $k$ 行对应的基变量出基. 此处假设为 $b_1$ 和 $x_1$.</li>
+<li><strong>确定进基变量</strong>. 如果 $a_{1,i} \ge 0, \forall m+1 \le i \le n$, 则问题无解. 否则, 令 $k = \arg\min_{ \lbrace i|m+1\le i \le n, a_{1,i} &lt; 0 \rbrace } \dfrac{c_i}{a_{1,i}}$, 即 $\dfrac{c_k}{a_{1,k}}$ 是 $\dfrac{c_i}{a_{1,i}}$ 中非负最小者, 选择 $x_k$ 进基. 如果有多个 $k$, 选择其中最小者. 此处假设为 $x_{m+1}$.</li>
+<li><strong>初等行变换</strong>. 将第 $1$ 行除以 $a_{1,m+1}$, 并乘以 $-a_{i, m+1}$ 加到第 $i$ 行上, 乘以 $-c_{m+1}$ 加到最后一行上.</li>
+</ol>
+
+        </section>
+    </article>
+</main>
+
+
+
+        
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<html class="dark light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+
+    
+    
+    
+    <title>
+         「人工智能原理」第一次编程作业及解题思路
+        
+    </title>
+
+        
+            <meta property="og:title" content="「人工智能原理」第一次编程作业及解题思路" />
+        
+     
+
+     
+         
+     
+
+     
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://nervonment.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Nervonment&#x27;s Izakaya" href="https://nervonment.github.io/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://nervonment.github.io/theme/light.css />
+        <link rel="stylesheet" type="text/css" href="https://nervonment.github.io/theme/dark.css" media="(prefers-color-scheme: dark)" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://nervonment.github.io/js/themetoggle.js></script>
+    
+        <script>
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme("dark");
+            } else {
+                setTheme("light");
+            }
+        </script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://nervonment.github.io/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;nervonment.github.io&#x2F;>Nervonment&#x27;s Izakaya</a>
+
+        <div class="socials">
+            
+            <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;Nervonment&#x2F;" class="social">
+                <img alt=github src=https://nervonment.github.io/social_icons/github.svg>
+            </a>
+            
+            <a rel="me" href="https:&#x2F;&#x2F;space.bilibili.com&#x2F;401603096&#x2F;" class="social">
+                <img alt=bilibili src=https://nervonment.github.io/social_icons/bilibili.svg>
+            </a>
+            
+            <a rel="me" href="mailto:nervonment@outlook.com" class="social">
+                <img alt=email src=https://nervonment.github.io/social_icons/mail.svg>
+            </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+        <a href=https://nervonment.github.io/posts style="margin-left: 0.5em">帖子</a>
+        
+        <a href=https://nervonment.github.io/projects style="margin-left: 0.5em">项目</a>
+        
+        <a href=https://nervonment.github.io/about style="margin-left: 0.5em">关于</a>
+        
+        <a href=https://nervonment.github.io/tags style="margin-left: 0.5em">标签</a>
+        
+
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        「人工智能原理」第一次编程作业及解题思路<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2024-09-23</time>
+                    
+
+                    
+                        :: Updated on <time>2024-09-23</time>
+                    
+
+                    
+
+                    
+                    
+                            <span class="tags-label"> :: Tags:</span>
+                            <span class="tags">
+                                    <a href="https://nervonment.github.io/tags/ke-cheng-ren-gong-zhi-neng-yuan-li/" class="post-tag">课程「人工智能原理」</a>
+                                
+                            </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <blockquote>
+<p>「这个是江瑞老师 2024 秋季学期人工智能原理课程编程作业, 这里给出一种简单的理解. 同学们理性参考. 」</p>
+</blockquote>
+<p><em>我不知道你是怎么看到这篇文章的, 但是我觉得使用搜索引擎应该搜不出这篇文章吧. 应该吧.</em></p>
+<h1 id="ti-mu-miao-shu"><a class="zola-anchor" href="#ti-mu-miao-shu" aria-label="Anchor link for: ti-mu-miao-shu">题目描述</a></h1>
+<p>本题的背景是连连看小游戏. $6 \times 6$ 的网格中分布着若干对字母 (可能重复), 玩家需要用线条连接每对相同的字母 (题目中没说线条之间能否相互交叉, 但我觉得应该不能), 线条可以超出 $6 \times 6$ 的网格区域. 下面是一个示例.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>   │ C │ D │_A_│   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>   │ B │   │   │ E │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>   │   │   │ C │ B │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>   │ C │ B │ E │   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>   │ B │   │ D │   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>_A_│   │   │   │   │ C │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span></code></pre>
+<p>问题:</p>
+<ol>
+<li>对任意一对字母, 找出它们之间的最短路径.</li>
+<li>对任意一对字母, 找出它们之间转弯次数最少的路径.</li>
+<li>(选做) 用最少的转弯次数连接配对所有的字母对.</li>
+</ol>
+<p>以上图中的一对字母 A (那个不是颜文字) 为例, 它们之间的最短路径为:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>   │ C │ D │_A_│   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>   │ B │ * │ * │ E │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │ * │ * │ C │ B │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │ C │ B │ E │   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │ B │   │ D │   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>_A_│   │   │   │   │ C │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span></code></pre>
+<p>它们之间的转弯次数最少的路径为:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> * │ * │ * │ * │   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │ C │ D │_A_│   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │ B │   │   │ E │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │   │   │ C │ B │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │ C │ B │ E │   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span> * │ B │   │ D │   │   │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span><span>_A_│   │   │   │   │ C │
+</span><span>───┼───┼───┼───┼───┼───┼
+</span></code></pre>
+<p><em>注意此处路径超出了网格区域, 这是允许的.</em></p>
+<h1 id="jie-ti-si-lu"><a class="zola-anchor" href="#jie-ti-si-lu" aria-label="Anchor link for: jie-ti-si-lu">解题思路</a></h1>
+<p>第 1 问显然可以直接用广度优先搜索解决. (这节课为止还没有讲到 A* 之类的算法, 就不考虑了.) 第 2 问乍一看不太明晰, 但其实也可以用广度优先搜索. 第 3 问我还没想明白.</p>
+<h2 id="di-1-wen"><a class="zola-anchor" href="#di-1-wen" aria-label="Anchor link for: di-1-wen">第 1 问</a></h2>
+<p>搞清楚下面几个要素就能够应用广度优先搜索了.</p>
+<ul>
+<li>状态(顶点): 当前格的坐标 $(x, y)$.</li>
+<li>初始状态: 起始格的坐标, 在上面的例子中为 $(3, 0)$ (以 $6 \times 6$ 网格的左上角为 $(0, 0)$).</li>
+<li>行动(边): 从 $(x, y)$ 格出发可以移动到 $(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)$ 中没有字母的格子.</li>
+<li>终止状态: 终点格的坐标.</li>
+</ul>
+<h2 id="di-2-wen"><a class="zola-anchor" href="#di-2-wen" aria-label="Anchor link for: di-2-wen">第 2 问</a></h2>
+<p>在第 1 问中, 我们把「一步」（一个行动或一条边）老老实实地定义成从某格上下左右移动一格. 这样就能确保在进行广度优先搜索的时候, 搜索出的路径长度是最短的. 现在, 既然我们要使转弯的次数最少, 那么「一步」就应该定义成一次转弯.</p>
+<ul>
+<li>状态(顶点): $((x, y), d)$. 其中 $(x, y)$ 是当前格的坐标; $d$ 是上一次移动的方向, 取值为 $(-1, 0), (1, 0), (0, -1), (0, 1), (0, 0)$ 其中之一, 前四个各代表左, 右, 上, 下, 最后一个只在初始状态下出现, 原因稍后解释.</li>
+<li>初始状态: $((x_0, y_0), (0, 0))$, 其中 $(x_0, y_0)$ 是起始格的坐标.</li>
+<li>行动(边): 从状态 $((x, y), d)$ 出发, 可以到达状态 $((x, y) + n \cdot d^\prime, d^\prime)$. 其中 $n$ 为任意正整数, 代表了移动的距离; $d^\prime$ 为上下左右四个方向中任意与 $d$ 不同的方向. 两者满足: 格子 $(x, y) + n \cdot d^\prime$ 与 $(x, y)$ 之间的空间没有字母的阻隔.</li>
+</ul>
+<div class="note-container">
+  
+    <div class="note-header">
+      
+        <div class="note-icon">
+        <p>提示</p>
+
+        </div>
+      
+    </div>
+    <div class="note-content">
+      <p>限制 $d^\prime$ 与 $d$ 不同是为了让每一次行动都是转向 (即不能选择和上一次行动一样的方向). 因为从初始状态出发可以选择上下左右任意一个方向, 所以将初始状态的 $d$ 特别设为 $(0, 0)$ 以与上下左右四个方向都不同 (你也可以设成 $(114, 514)$ 等任意富有个性的值).</p>
+
+    </div>
+  
+</div>
+<ul>
+<li>终止状态: 终止状态的坐标就是终点格的坐标, 方向任取, 只要搜索到终点格即停止搜索即可.</li>
+</ul>
+<p>简单来说, 就是将路径中的每一条线段看成一次行动即可. 另外还需注意, 每次行动中, 需要将线段上的所有格子都加入闭节点表. 这样一来即可应用广度优先搜索. 代码就不粘在这儿了, 写得有点乱.</p>
+<h2 id="di-3-wen"><a class="zola-anchor" href="#di-3-wen" aria-label="Anchor link for: di-3-wen">第 3 问</a></h2>
+<p>你行你上, 我是真不会.</p>
+
+        </section>
+    </article>
+</main>
+
+
+
+        
+
+    </div>
+</body>
+
+</html>
